@@ -1,6 +1,6 @@
-package annotation.entity;
+package model.annotation.entity;
 
-import enumeration.entity.ColumnDefinition;
+import model.enumeration.entity.ColumnDefinition;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

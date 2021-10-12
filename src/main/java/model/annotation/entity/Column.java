@@ -1,6 +1,11 @@
-package annotation.entity;
+package model.annotation.entity;
 
-import enumeration.entity.ColumnDefinition;
+import model.enumeration.entity.ColumnDefinition;
+
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
  * <p>specifies columns of table
@@ -14,6 +19,8 @@ import enumeration.entity.ColumnDefinition;
  *
  * @author alireza_bayat
  */
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.FIELD)
 public @interface Column {
 
     /**

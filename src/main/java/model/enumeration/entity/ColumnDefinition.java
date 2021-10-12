@@ -1,4 +1,4 @@
-package enumeration.entity;
+package model.enumeration.entity;
 
 /**
  * <p> map of data base column definitions
