@@ -1,4 +1,4 @@
-package model.enumeration.entity;
+package com.hades.model.enumeration.entity;
 
 /**
  * <p> map of data base column definitions

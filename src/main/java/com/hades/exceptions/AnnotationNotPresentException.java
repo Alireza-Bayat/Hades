@@ -1,4 +1,4 @@
-package exceptions;
+package com.hades.exceptions;
 
 /**
  * <p> in cases that utilizing specific annotation is required but annotation is not present

@@ -1,9 +1,9 @@
-package builder.sqlCommand;
+package com.hades.builder.sqlCommand;
 
 
-import exceptions.AnnotationNotPresentException;
-import model.annotation.entity.Column;
-import model.annotation.entity.Table;
+import com.hades.exceptions.AnnotationNotPresentException;
+import com.hades.model.annotation.entity.Column;
+import com.hades.model.annotation.entity.Table;
 
 import java.lang.reflect.Field;
 

@@ -1,6 +1,6 @@
-package model.annotation.entity;
+package com.hades.model.annotation.entity;
 
-import model.enumeration.entity.ColumnDefinition;
+import com.hades.model.enumeration.entity.ColumnDefinition;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

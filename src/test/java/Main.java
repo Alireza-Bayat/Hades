@@ -1,6 +1,6 @@
 import entity.EntitySample;
 import org.junit.Test;
-import services.RelationalServices;
+import com.hades.services.RelationalServices;
 
 public class Main {
 

@@ -1,6 +1,6 @@
-package services;
+package com.hades.services;
 
-import builder.sqlCommand.SQLCommands;
+import com.hades.builder.sqlCommand.SQLCommands;
 
 /**
  * @author alireza_bayat

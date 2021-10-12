@@ -1,4 +1,4 @@
-package builder.sqlCommand;
+package com.hades.builder.sqlCommand;
 
 /**
  * @author alireza_bayat
