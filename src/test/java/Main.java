@@ -1,8 +1,8 @@
-import builder.sqlCommand.clauserBuilder.ClauseBuilder;
+import com.hades.builder.sqlCommand.clauserBuilder.ClauseBuilder;
 import entity.EntitySample;
-import model.type.Selection;
+import com.hades.model.type.Selection;
 import org.junit.Test;
-import services.RelationalServices;
+import com.hades.services.RelationalServices;
 
 import java.util.ArrayList;
 import java.util.List;

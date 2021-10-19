@@ -1,9 +1,12 @@
 package entity;
 
-import model.annotation.entity.Column;
-import model.annotation.entity.Table;
-import model.enumeration.entity.ColumnDefinition;
-import model.type.EntityType;
+import com.hades.model.model.annotation.entity.Column;
+import com.hades.model.model.annotation.entity.Table;
+import com.hades.model.model.enumeration.entity.ColumnDefinition;
+import com.hades.model.type.EntityType;
+import com.hades.model.annotation.entity.Column;
+import com.hades.model.annotation.entity.Table;
+import com.hades.model.enumeration.entity.ColumnDefinition;
 
 import java.sql.Timestamp;
 
