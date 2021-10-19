@@ -1,4 +1,4 @@
-package builder.sqlCommand;
+package builder.sqlCommand.rules;
 
 
 /**
