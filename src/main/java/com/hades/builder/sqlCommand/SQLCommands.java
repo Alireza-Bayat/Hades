@@ -16,9 +16,9 @@ public interface SQLCommands<E extends EntityType> {
 
     String findAll(E e, Selection... selections);
 
-    String findAll(E e, ClauseBuilder clauseBuilder);
+    String findAll(E e, ClauseBuilder<E> clauseBuilder);
 
-    String findAll(E e, ClauseBuilder clauseBuilder, String... fieldsName);
+    String findAll(E e, ClauseBuilder<E> clauseBuilder, String... fieldsName);
     //</editor-fold>
 
 }

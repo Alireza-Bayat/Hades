@@ -1,8 +1,9 @@
 import com.hades.builder.sqlCommand.clauserBuilder.ClauseBuilder;
-import entity.EntitySample;
+import com.hades.builder.sqlCommand.clauserBuilder.filter.FilterClause;
 import com.hades.model.type.Selection;
-import org.junit.Test;
 import com.hades.services.RelationalServices;
+import entity.EntitySample;
+import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +34,18 @@ public class Main {
     @Test
     public void selectQueryWithCriteria() {
         RelationalServices<EntitySample> relationalServices = new RelationalServices<>();
-        System.out.println("select with where clause -> " + relationalServices.findAll(new EntitySample(), new ClauseBuilder()));
+        ClauseBuilder<EntitySample> clauseBuilder = new ClauseBuilder<>();
+        FilterClause<EntitySample> filterClause = new FilterClause<>();
+        filterClause.equal(new EntitySample(), "id", "10000")
+                .and()
+                .equal(new EntitySample(), "name", "harchi")
+                .or()
+                .equal(new EntitySample(), "family", "harchiiii")
+                .and().in(new EntitySample(), "id", "1", "2", "3", "4")
+                .or().notIn(new EntitySample(), "id", "5", "6", "7");
+
+        clauseBuilder.setFilterClause(filterClause);
+        System.out.println("select with where clause -> " + relationalServices.findAll(new EntitySample(), clauseBuilder));
     }
+
 }

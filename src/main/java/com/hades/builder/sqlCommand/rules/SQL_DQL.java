@@ -36,8 +36,8 @@ public interface SQL_DQL<E extends EntityType> extends SQLUtils<E> {
 
     String selectQuery(E e, Selection... selections);
 
-    String selectQuery(E e, ClauseBuilder clauseBuilder);
+    String selectQuery(E e, ClauseBuilder<E> clauseBuilder);
 
-    String selectQuery(E e, ClauseBuilder clauseBuilder, String... fieldsName);
+    String selectQuery(E e, ClauseBuilder<E> clauseBuilder, String... fieldsName);
 
 }

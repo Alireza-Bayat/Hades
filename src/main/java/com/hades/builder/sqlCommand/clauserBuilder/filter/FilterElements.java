@@ -6,6 +6,16 @@ package com.hades.builder.sqlCommand.clauserBuilder.filter;
  */
 public class FilterElements {
 
-    private String filterClause;
+    protected String filterClause = "";
 
+    public FilterElements() {
+    }
+
+    public String getFilterClause() {
+        return filterClause;
+    }
+
+    public void setFilterClause(String filterClause) {
+        this.filterClause = filterClause;
+    }
 }

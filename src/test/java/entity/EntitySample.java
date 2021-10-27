@@ -1,8 +1,5 @@
 package entity;
 
-import com.hades.model.model.annotation.entity.Column;
-import com.hades.model.model.annotation.entity.Table;
-import com.hades.model.model.enumeration.entity.ColumnDefinition;
 import com.hades.model.type.EntityType;
 import com.hades.model.annotation.entity.Column;
 import com.hades.model.annotation.entity.Table;
@@ -24,5 +21,4 @@ public class EntitySample extends EntityType {
     @Column(name = "type", columnDefinition = ColumnDefinition.INT)
     private int type;
 
-//    @Over
 }

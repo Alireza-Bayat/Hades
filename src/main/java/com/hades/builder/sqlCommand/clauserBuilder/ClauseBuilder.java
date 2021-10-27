@@ -1,20 +1,28 @@
 package com.hades.builder.sqlCommand.clauserBuilder;
 
+import com.hades.builder.sqlCommand.clauserBuilder.filter.FilterClause;
+import com.hades.model.type.EntityType;
+
 /**
  * @author alireza_bayat
  * created on 10/19/21
  */
-public class ClauseBuilder {
+public class ClauseBuilder<E extends EntityType> {
 
-    // and
+    FilterClause<E> filterClause;
 
-    // or
+    public ClauseBuilder() {
+    }
 
-    // equal
+    public ClauseBuilder(FilterClause<E> filterClause) {
+        this.filterClause = filterClause;
+    }
 
-    // in
+    public FilterClause<E> getFilterClause() {
+        return filterClause;
+    }
 
-    // not in
-
-
+    public void setFilterClause(FilterClause<E> filterClause) {
+        this.filterClause = filterClause;
+    }
 }

@@ -30,12 +30,12 @@ public class RelationalServices<E extends EntityType> implements SQLCommands<E> 
     }
 
     @Override
-    public String findAll(E e, ClauseBuilder clauseBuilder) {
+    public String findAll(E e, ClauseBuilder<E> clauseBuilder) {
         return dql.selectQuery(e, clauseBuilder);
     }
 
     @Override
-    public String findAll(E e, ClauseBuilder clauseBuilder, String... fieldsName) {
+    public String findAll(E e, ClauseBuilder<E> clauseBuilder, String... fieldsName) {
         return dql.selectQuery(e, clauseBuilder, fieldsName);
     }
 }

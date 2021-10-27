@@ -1,6 +1,7 @@
 package com.hades.builder.sqlCommand.impl;
 
 import com.hades.builder.sqlCommand.clauserBuilder.ClauseBuilder;
+import com.hades.builder.sqlCommand.clauserBuilder.filter.FilterClause;
 import com.hades.builder.sqlCommand.rules.SQL_DQL;
 import com.hades.model.annotation.entity.Column;
 import com.hades.model.annotation.entity.Table;
@@ -34,6 +35,8 @@ public class DQLImpl<E extends EntityType> implements SQL_DQL<E> {
         removeLastIndexStringBuilder(query);
         addQueryKeyWord(query, QueryKeyWords.FROM);
         query.append(tableAnnotation.name());
+        addQueryKeyWord(query, QueryKeyWords.AS);
+        query.append(getTableAlias(tableAnnotation));
         return query.toString();
     }
 
@@ -54,6 +57,8 @@ public class DQLImpl<E extends EntityType> implements SQL_DQL<E> {
         removeLastIndexStringBuilder(query);
         addQueryKeyWord(query, QueryKeyWords.FROM);
         query.append(tableAnnotation.name());
+        addQueryKeyWord(query, QueryKeyWords.AS);
+        query.append(getTableAlias(tableAnnotation));
 
         return query.toString();
     }
@@ -75,17 +80,42 @@ public class DQLImpl<E extends EntityType> implements SQL_DQL<E> {
         removeLastIndexStringBuilder(query);
         addQueryKeyWord(query, QueryKeyWords.FROM);
         query.append(tableAnnotation.name());
+        addQueryKeyWord(query, QueryKeyWords.AS);
+        query.append(getTableAlias(tableAnnotation));
 
         return query.toString();
     }
 
     @Override
-    public String selectQuery(E e, ClauseBuilder clauseBuilder) {
-        return null;
+    public String selectQuery(E e, ClauseBuilder<E> clauseBuilder) {
+        Class<?> entity = getClazz(e);
+        Table tableAnnotation = getTableAnnotation(entity);
+        StringBuilder query = new StringBuilder();
+
+        addQueryKeyWord(query, QueryKeyWords.SELECT);
+        for (Field declaredField : entity.getDeclaredFields()) {
+            declaredField.setAccessible(true);
+            Column columnAnnotation = declaredField.getDeclaredAnnotation(Column.class);
+            if (columnAnnotation != null)
+                query.append(columnAnnotation.name()).append(",");
+        }
+
+        removeLastIndexStringBuilder(query);
+        addQueryKeyWord(query, QueryKeyWords.FROM);
+        query.append(tableAnnotation.name());
+        addQueryKeyWord(query, QueryKeyWords.AS);
+        query.append(getTableAlias(tableAnnotation));
+
+        //TODO WHERE
+        FilterClause<E> filterClause = clauseBuilder.getFilterClause();
+        addQueryKeyWord(query, QueryKeyWords.WHERE);
+        query.append(filterClause.getFilterClause());
+
+        return query.toString();
     }
 
     @Override
-    public String selectQuery(E e, ClauseBuilder clauseBuilder, String... fieldsName) {
+    public String selectQuery(E e, ClauseBuilder<E> clauseBuilder, String... fieldsName) {
         return null;
     }
 
