@@ -1,7 +1,7 @@
 package com.hades.builder.sqlCommand.impl;
 
 import com.hades.builder.sqlCommand.clauserBuilder.ClauseBuilder;
-import com.hades.builder.sqlCommand.clauserBuilder.filter.FilterClause;
+import com.hades.builder.sqlCommand.clauserBuilder.filter.FilterClauseImpl;
 import com.hades.builder.sqlCommand.rules.SQL_DQL;
 import com.hades.model.annotation.entity.Column;
 import com.hades.model.annotation.entity.Table;
@@ -107,9 +107,9 @@ public class DQLImpl<E extends EntityType> implements SQL_DQL<E> {
         query.append(getTableAlias(tableAnnotation));
 
         //TODO WHERE
-        FilterClause<E> filterClause = clauseBuilder.getFilterClause();
+        FilterClauseImpl<E> filterClauseImpl = clauseBuilder.getFilterClause();
         addQueryKeyWord(query, QueryKeyWords.WHERE);
-        query.append(filterClause.getFilterClause());
+        query.append(filterClauseImpl.getFilterClause());
 
         return query.toString();
     }

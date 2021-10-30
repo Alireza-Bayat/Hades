@@ -68,6 +68,8 @@ public interface SQLFilterClause<E extends EntityType> {
     //TODO not in with inner select
     SQLFilterClause<E> notIn(E e, String field, String... items);
 
+    //TODO like,exists, between, not, is, null
+
     SQLFilterClause<E> customClause(String customClause);
 
 }

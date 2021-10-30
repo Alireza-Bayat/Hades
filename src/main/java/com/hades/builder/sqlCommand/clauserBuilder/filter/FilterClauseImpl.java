@@ -10,7 +10,7 @@ import com.hades.model.type.Selection;
  * @author alireza_bayat
  * created on 10/19/21
  */
-public class FilterClause<E extends EntityType> extends FilterElements implements SQLFilterClause<E> {
+public class FilterClauseImpl<E extends EntityType> extends FilterElements implements SQLFilterClause<E> {
 
     //TODO probably not the best way to use it's function
     // sqlFilterClause extend was tested due to visibility of functions out of library - > ????
@@ -18,7 +18,7 @@ public class FilterClause<E extends EntityType> extends FilterElements implement
     };
 
     @Override
-    public FilterClause<E> equal(E e, String field, String filterPhrase) {
+    public FilterClauseImpl<E> equal(E e, String field, String filterPhrase) {
         super.setFilterClause(super.filterClause.concat(sqlUtils.getTableAlias(sqlUtils.getTableAnnotation(sqlUtils.getClazz(e))))
                 .concat(sqlUtils.addQueryKeyOperator(QueryKeyOperators.DOT)).concat(field)
                 .concat(sqlUtils.addQueryKeyOperator(QueryKeyOperators.EQUAL)).concat(filterPhrase));
@@ -26,7 +26,7 @@ public class FilterClause<E extends EntityType> extends FilterElements implement
     }
 
     @Override
-    public FilterClause<E> equal(E e, Selection selection, String filterPhrase) {
+    public FilterClauseImpl<E> equal(E e, Selection selection, String filterPhrase) {
         sqlUtils.fieldExistInEntity(e, selection);
         super.setFilterClause(super.filterClause.concat(sqlUtils.getTableAlias(sqlUtils.getTableAnnotation(sqlUtils.getClazz(e))))
                 .concat(sqlUtils.addQueryKeyOperator(QueryKeyOperators.DOT)).concat(selection.getFieldName())
@@ -52,13 +52,13 @@ public class FilterClause<E extends EntityType> extends FilterElements implement
     }
 
     @Override
-    public FilterClause<E> and() {
+    public FilterClauseImpl<E> and() {
         super.setFilterClause(super.filterClause.concat(" ").concat(sqlUtils.addQueryKeyWord(QueryKeyWords.AND)).concat(" "));
         return this;
     }
 
     @Override
-    public FilterClause<E> or() {
+    public FilterClauseImpl<E> or() {
         super.setFilterClause(super.filterClause.concat(" ").concat(sqlUtils.addQueryKeyWord(QueryKeyWords.OR)).concat(" "));
         return this;
     }

@@ -1,5 +1,5 @@
 import com.hades.builder.sqlCommand.clauserBuilder.ClauseBuilder;
-import com.hades.builder.sqlCommand.clauserBuilder.filter.FilterClause;
+import com.hades.builder.sqlCommand.clauserBuilder.filter.FilterClauseImpl;
 import com.hades.model.type.Selection;
 import com.hades.services.RelationalServices;
 import entity.EntitySample;
@@ -7,6 +7,7 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+
 
 public class Main {
 
@@ -35,16 +36,14 @@ public class Main {
     public void selectQueryWithCriteria() {
         RelationalServices<EntitySample> relationalServices = new RelationalServices<>();
         ClauseBuilder<EntitySample> clauseBuilder = new ClauseBuilder<>();
-        FilterClause<EntitySample> filterClause = new FilterClause<>();
-        filterClause.equal(new EntitySample(), "id", "10000")
-                .and()
-                .equal(new EntitySample(), "name", "harchi")
-                .or()
-                .equal(new EntitySample(), "family", "harchiiii")
+        FilterClauseImpl<EntitySample> filterClauseImpl = new FilterClauseImpl<>();
+        filterClauseImpl.equal(new EntitySample(), "id", "10000")
+                .and().equal(new EntitySample(), "name", "harchi")
+                .or().equal(new EntitySample(), "family", "harchiiii")
                 .and().in(new EntitySample(), "id", "1", "2", "3", "4")
                 .or().notIn(new EntitySample(), "id", "5", "6", "7");
 
-        clauseBuilder.setFilterClause(filterClause);
+        clauseBuilder.setFilterClause(filterClauseImpl);
         System.out.println("select with where clause -> " + relationalServices.findAll(new EntitySample(), clauseBuilder));
     }
 
