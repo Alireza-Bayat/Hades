@@ -4,26 +4,25 @@ import com.hades.builder.sqlCommand.clauserBuilder.filter.FilterClauseImpl;
 import com.hades.model.type.EntityType;
 
 
-
 /**
  * @author alireza_bayat
  * created on 10/30/21
  */
-public interface SQLJoinClause<E extends EntityType> {
+public interface SQLJoinClause<E extends EntityType, T extends EntityType> {
 
-    SQLJoinClause<E> on();
+    SQLJoinClause<E, T> on();
 
-    SQLJoinClause<E> where(FilterClauseImpl<E> filterClause);
+    SQLJoinClause<E, T> where(FilterClauseImpl<E> filterClause);
 
-    SQLJoinClause<E> join();
+    SQLJoinClause<E, T> join();
 
-    SQLJoinClause<E> leftJoin();
+    SQLJoinClause<E, T> leftJoin();
 
-    SQLJoinClause<E> rightJoin();
+    SQLJoinClause<E, T> rightJoin();
 
-    SQLJoinClause<E> fullJoin();
+    SQLJoinClause<E, T> fullJoin();
 
-    SQLJoinClause<E> selfJoin();
+    SQLJoinClause<E, T> selfJoin();
 
 
     // update join

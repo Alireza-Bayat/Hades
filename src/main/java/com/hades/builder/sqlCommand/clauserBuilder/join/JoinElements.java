@@ -5,4 +5,17 @@ package com.hades.builder.sqlCommand.clauserBuilder.join;
  * created on 10/30/21
  */
 public class JoinElements {
+
+    private String joinClause = "";
+
+    public JoinElements() {
+    }
+
+    public String getJoinClause() {
+        return joinClause;
+    }
+
+    public void setJoinClause(String joinClause) {
+        this.joinClause = joinClause;
+    }
 }
