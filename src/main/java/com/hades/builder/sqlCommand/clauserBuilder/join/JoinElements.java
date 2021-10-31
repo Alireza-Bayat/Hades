@@ -6,7 +6,7 @@ package com.hades.builder.sqlCommand.clauserBuilder.join;
  */
 public class JoinElements {
 
-    private String joinClause = "";
+    protected String joinClause = "";
 
     public JoinElements() {
     }

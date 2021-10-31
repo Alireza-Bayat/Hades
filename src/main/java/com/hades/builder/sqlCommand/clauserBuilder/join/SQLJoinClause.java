@@ -1,6 +1,6 @@
 package com.hades.builder.sqlCommand.clauserBuilder.join;
 
-import com.hades.builder.sqlCommand.clauserBuilder.filter.FilterClauseImpl;
+import com.hades.builder.sqlCommand.clauserBuilder.filter.FilterClause;
 import com.hades.model.type.EntityType;
 
 
@@ -8,21 +8,25 @@ import com.hades.model.type.EntityType;
  * @author alireza_bayat
  * created on 10/30/21
  */
-public interface SQLJoinClause<E extends EntityType, T extends EntityType> {
+public interface SQLJoinClause<E extends EntityType> {
 
-    SQLJoinClause<E, T> on();
+    SQLJoinClause<E> createInstance(E e);
 
-    SQLJoinClause<E, T> where(FilterClauseImpl<E> filterClause);
+    SQLJoinClause<E> on();
 
-    SQLJoinClause<E, T> join();
+    SQLJoinClause<E> where(FilterClause<E> filterClause);
 
-    SQLJoinClause<E, T> leftJoin();
+    SQLJoinClause<E> join(Class<?> referencedClass, String entityKey, String referencedKey);
 
-    SQLJoinClause<E, T> rightJoin();
+    SQLJoinClause<E> leftJoin(Class<?> referencedClass, String entityKey, String referencedKey);
 
-    SQLJoinClause<E, T> fullJoin();
+    SQLJoinClause<E> rightJoin(Class<?> referencedClass, String entityKey, String referencedKey);
 
-    SQLJoinClause<E, T> selfJoin();
+    SQLJoinClause<E> fullJoin();
+
+    SQLJoinClause<E> selfJoin();
+
+    SQLJoinClause<E> customJoin(String customJoin);
 
 
     // update join

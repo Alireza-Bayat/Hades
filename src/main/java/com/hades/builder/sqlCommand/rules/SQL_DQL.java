@@ -3,6 +3,7 @@ package com.hades.builder.sqlCommand.rules;
 
 import com.hades.builder.sqlCommand.SQLUtils;
 import com.hades.builder.sqlCommand.clauserBuilder.ClauseBuilder;
+import com.hades.builder.sqlCommand.clauserBuilder.join.JoinClause;
 import com.hades.model.annotation.entity.Column;
 import com.hades.model.type.EntityType;
 import com.hades.model.type.Selection;
@@ -39,5 +40,6 @@ public interface SQL_DQL<E extends EntityType> extends SQLUtils<E> {
     String selectQuery(E e, ClauseBuilder<E> clauseBuilder);
 
     String selectQuery(E e, ClauseBuilder<E> clauseBuilder, String... fieldsName);
+
 
 }

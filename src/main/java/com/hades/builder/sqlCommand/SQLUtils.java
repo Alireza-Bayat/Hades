@@ -58,12 +58,16 @@ public interface SQLUtils<E extends EntityType> extends SQLValidationUtils<E> {
         return table.alias().equalsIgnoreCase("") ? table.name() : table.alias();
     }
 
+    default String getTableName(Table table) {
+        return table.name();
+    }
+
     default void addQueryKeyWord(StringBuilder s, QueryKeyWords queryKeyWords) {
-        s.append(" ").append(queryKeyWords.getKeyWord()).append(" ");
+        s.append(queryKeyWords.getKeyWord());
     }
 
     default String addQueryKeyWord(QueryKeyWords queryKeyWords) {
-        return " " + queryKeyWords.getKeyWord() + " ";
+        return queryKeyWords.getKeyWord();
     }
 
     default String addQueryKeyOperator(QueryKeyOperators queryKeyOperators) {

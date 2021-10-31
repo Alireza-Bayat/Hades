@@ -1,7 +1,7 @@
 package com.hades.builder.sqlCommand.clauserBuilder;
 
-import com.hades.builder.sqlCommand.clauserBuilder.filter.FilterClauseImpl;
-import com.hades.builder.sqlCommand.clauserBuilder.join.JoinClauseImpl;
+import com.hades.builder.sqlCommand.clauserBuilder.filter.FilterClause;
+import com.hades.builder.sqlCommand.clauserBuilder.join.JoinClause;
 import com.hades.model.type.EntityType;
 
 /**
@@ -10,38 +10,38 @@ import com.hades.model.type.EntityType;
  */
 public class ClauseBuilder<E extends EntityType> {
 
-    FilterClauseImpl<E> filterClause;
-    JoinClauseImpl<E> joinClause;
+    FilterClause<E> filterClause;
+    JoinClause<E> joinClause;
 
     public ClauseBuilder() {
     }
 
-    public ClauseBuilder(FilterClauseImpl<E> filterClauseImpl) {
-        this.filterClause = filterClauseImpl;
+    public ClauseBuilder(FilterClause<E> filterClause) {
+        this.filterClause = filterClause;
     }
 
-    public ClauseBuilder(JoinClauseImpl<E> joinClause) {
+    public ClauseBuilder(JoinClause<E> joinClause) {
         this.joinClause = joinClause;
     }
 
-    public ClauseBuilder(FilterClauseImpl<E> filterClause, JoinClauseImpl<E> joinClause) {
+    public ClauseBuilder(FilterClause<E> filterClause, JoinClause<E> joinClause) {
         this.filterClause = filterClause;
         this.joinClause = joinClause;
     }
 
-    public FilterClauseImpl<E> getFilterClause() {
+    public FilterClause<E> getFilterClause() {
         return filterClause;
     }
 
-    public void setFilterClause(FilterClauseImpl<E> filterClause) {
+    public void setFilterClause(FilterClause<E> filterClause) {
         this.filterClause = filterClause;
     }
 
-    public JoinClauseImpl<E> getJoinClause() {
+    public JoinClause<E> getJoinClause() {
         return joinClause;
     }
 
-    public void setJoinClause(JoinClauseImpl<E> joinClause) {
+    public void setJoinClause(JoinClause<E> joinClause) {
         this.joinClause = joinClause;
     }
 }
