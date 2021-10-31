@@ -1,12 +1,16 @@
 import com.hades.builder.sqlCommand.clauserBuilder.ClauseBuilder;
 import com.hades.builder.sqlCommand.clauserBuilder.filter.FilterClause;
+import com.hades.builder.sqlCommand.clauserBuilder.join.JoinClause;
+import com.hades.model.enumeration.relational.JoinTypes;
 import com.hades.model.type.Selection;
 import com.hades.services.RelationalServices;
 import entity.EntitySample;
+import entity.ReferencedEntitySample;
 import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+
 
 public class Main {
 
@@ -35,16 +39,19 @@ public class Main {
     public void selectQueryWithCriteria() {
         RelationalServices<EntitySample> relationalServices = new RelationalServices<>();
         ClauseBuilder<EntitySample> clauseBuilder = new ClauseBuilder<>();
-        FilterClause<EntitySample> filterClause = new FilterClause<>();
-        filterClause.equal(new EntitySample(), "id", "10000")
-                .and()
-                .equal(new EntitySample(), "name", "harchi")
-                .or()
-                .equal(new EntitySample(), "family", "harchiiii")
-                .and().in(new EntitySample(), "id", "1", "2", "3", "4")
-                .or().notIn(new EntitySample(), "id", "5", "6", "7");
+        FilterClause<EntitySample> filterClause = new FilterClause<>(EntitySample.class);
+        filterClause
+                .equal("id", "10000")
+                .and().equal("name", "harchi")
+                .or().equal("family", "harchiiii")
+                .and().in("id", "1", "2", "3", "4")
+                .or().notIn("id", "5", "6", "7");
+
+        JoinClause<EntitySample> joinClause = new JoinClause<EntitySample>(EntitySample.class);
+        joinClause.join(ReferencedEntitySample.class, "listing_type_id", "id", JoinTypes.LEFT_JOIN);
 
         clauseBuilder.setFilterClause(filterClause);
+        clauseBuilder.setJoinClause(joinClause);
         System.out.println("select with where clause -> " + relationalServices.findAll(new EntitySample(), clauseBuilder));
     }
 

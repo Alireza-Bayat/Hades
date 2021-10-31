@@ -1,24 +1,23 @@
 package entity;
 
-import com.hades.model.type.EntityType;
-
 import javax.persistence.Column;
-import javax.persistence.Entity;
 import javax.persistence.Table;
 import java.sql.Timestamp;
 
-@Table(name = "listing")
-public class EntitySample extends EntityType {
+/**
+ * @author alireza_bayat
+ * created on 10/31/21
+ */
+
+@Table(name = "property_type")
+public class ReferencedEntitySampleSecond extends EntitySample {
 
     @Column(name = "id", nullable = false, updatable = false)
     private int id;
-
-    @Column(name = "listing_type_id", nullable = false, updatable = false)
+    @Column(name = "sample_id", nullable = false, updatable = false)
     private int sampleId;
-
-    @Column(name = "property_type_id", nullable = false, updatable = false)
+    @Column(name = "sample_id_second", nullable = false, updatable = false)
     private int sampleIdSecond;
-
     @Column(name = "name")
     private String name;
     @Column(name = "family")
@@ -27,5 +26,4 @@ public class EntitySample extends EntityType {
     private Timestamp createDate;
     @Column(name = "type")
     private int type;
-
 }
