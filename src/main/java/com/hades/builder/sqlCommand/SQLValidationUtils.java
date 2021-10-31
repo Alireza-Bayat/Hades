@@ -1,10 +1,10 @@
 package com.hades.builder.sqlCommand;
 
 import com.hades.exceptions.QueryGeneratorException;
-import com.hades.model.annotation.entity.Column;
 import com.hades.model.type.EntityType;
 import com.hades.model.type.Selection;
 
+import javax.persistence.Column;
 import java.lang.reflect.Field;
 
 /**

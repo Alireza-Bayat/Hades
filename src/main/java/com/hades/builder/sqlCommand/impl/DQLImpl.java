@@ -4,13 +4,13 @@ import com.hades.builder.sqlCommand.clauserBuilder.ClauseBuilder;
 import com.hades.builder.sqlCommand.clauserBuilder.filter.FilterClause;
 import com.hades.builder.sqlCommand.clauserBuilder.join.JoinClause;
 import com.hades.builder.sqlCommand.rules.SQL_DQL;
-import com.hades.model.annotation.entity.Column;
-import com.hades.model.annotation.entity.Table;
 import com.hades.model.enumeration.relational.QueryKeyOperators;
 import com.hades.model.enumeration.relational.QueryKeyWords;
 import com.hades.model.type.EntityType;
 import com.hades.model.type.Selection;
 
+import javax.persistence.Column;
+import javax.persistence.Table;
 import java.lang.reflect.Field;
 import java.util.Arrays;
 
@@ -24,7 +24,7 @@ public class DQLImpl<E extends EntityType> implements SQL_DQL<E> {
     public String selectQuery(E e) {
         Class<?> entity = getClazz(e);
         Table tableAnnotation = getTableAnnotation(entity);
-        String tableAlias = getTableAlias(tableAnnotation);
+        String tableAlias = getTableName(tableAnnotation);
         StringBuilder query = new StringBuilder();
 
         addQueryKeyWord(query, QueryKeyWords.SELECT);
@@ -40,7 +40,7 @@ public class DQLImpl<E extends EntityType> implements SQL_DQL<E> {
     public String selectQuery(E e, String... fieldsName) {
         Class<?> entity = getClazz(e);
         Table tableAnnotation = getTableAnnotation(entity);
-        String tableAlias = getTableAlias(tableAnnotation);
+        String tableAlias = getTableName(tableAnnotation);
         StringBuilder query = new StringBuilder();
 
         addQueryKeyWord(query, QueryKeyWords.SELECT);
@@ -55,7 +55,7 @@ public class DQLImpl<E extends EntityType> implements SQL_DQL<E> {
     public String selectQuery(E e, Selection... selections) {
         Class<?> entity = getClazz(e);
         Table tableAnnotation = getTableAnnotation(entity);
-        String tableAlias = getTableAlias(tableAnnotation);
+        String tableAlias = getTableName(tableAnnotation);
         StringBuilder query = new StringBuilder();
 
         addQueryKeyWord(query, QueryKeyWords.SELECT);
@@ -70,7 +70,7 @@ public class DQLImpl<E extends EntityType> implements SQL_DQL<E> {
     public String selectQuery(E e, ClauseBuilder<E> clauseBuilder) {
         Class<?> entity = getClazz(e);
         Table tableAnnotation = getTableAnnotation(entity);
-        String tableAlias = getTableAlias(tableAnnotation);
+        String tableAlias = getTableName(tableAnnotation);
         StringBuilder query = new StringBuilder();
 
         addQueryKeyWord(query, QueryKeyWords.SELECT);
@@ -105,7 +105,7 @@ public class DQLImpl<E extends EntityType> implements SQL_DQL<E> {
      *
      * @param fields     array of fields needed to used in select query
      * @param query      queryBuilder string
-     * @param tableAlias entity alias mentioned in {@link Table#alias()}
+     * @param tableAlias entity alias mentioned on entity
      */
     private void appendSelectColumns(Field[] fields, StringBuilder query, String tableAlias) {
         for (Field declaredField : fields) {
@@ -124,7 +124,7 @@ public class DQLImpl<E extends EntityType> implements SQL_DQL<E> {
      *
      * @param fields     array of fields needed to used in select query
      * @param query      queryBuilder string
-     * @param tableAlias entity alias mentioned in {@link Table#alias()}
+     * @param tableAlias entity alias mentioned on entity
      * @param selections {@link Selection} varargs of fieldNames
      */
     private void appendSelectColumns(Field[] fields, StringBuilder query, String tableAlias, Selection... selections) {
@@ -144,7 +144,7 @@ public class DQLImpl<E extends EntityType> implements SQL_DQL<E> {
      *
      * @param fields     array of fields needed to used in select query
      * @param query      queryBuilder string
-     * @param tableAlias entity alias mentioned in {@link Table#alias()}
+     * @param tableAlias entity alias mentioned on entity
      * @param fieldsName String varargs of fieldName
      */
     private void appendSelectColumns(Field[] fields, StringBuilder query, String tableAlias, String... fieldsName) {

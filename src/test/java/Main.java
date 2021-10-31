@@ -1,11 +1,11 @@
 import com.hades.builder.sqlCommand.clauserBuilder.ClauseBuilder;
 import com.hades.builder.sqlCommand.clauserBuilder.filter.FilterClause;
 import com.hades.builder.sqlCommand.clauserBuilder.join.JoinClause;
+import com.hades.model.enumeration.relational.JoinTypes;
 import com.hades.model.type.Selection;
 import com.hades.services.RelationalServices;
 import entity.EntitySample;
 import entity.ReferencedEntitySample;
-import entity.ReferencedEntitySampleSecond;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -48,8 +48,7 @@ public class Main {
                 .or().notIn("id", "5", "6", "7");
 
         JoinClause<EntitySample> joinClause = new JoinClause<EntitySample>(EntitySample.class);
-        joinClause.join(ReferencedEntitySample.class, "listing_type_id", "id")
-                .leftJoin(ReferencedEntitySampleSecond.class, "property_type_id", "id");
+        joinClause.join(ReferencedEntitySample.class, "listing_type_id", "id", JoinTypes.LEFT_JOIN);
 
         clauseBuilder.setFilterClause(filterClause);
         clauseBuilder.setJoinClause(joinClause);

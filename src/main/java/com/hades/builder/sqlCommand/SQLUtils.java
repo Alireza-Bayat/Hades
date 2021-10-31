@@ -2,10 +2,12 @@ package com.hades.builder.sqlCommand;
 
 
 import com.hades.exceptions.AnnotationNotPresentException;
-import com.hades.model.annotation.entity.Table;
+import com.hades.model.enumeration.relational.JoinTypes;
 import com.hades.model.enumeration.relational.QueryKeyOperators;
 import com.hades.model.enumeration.relational.QueryKeyWords;
 import com.hades.model.type.EntityType;
+
+import javax.persistence.Table;
 
 /**
  * <p> utilities of relational databases
@@ -51,13 +53,6 @@ public interface SQLUtils<E extends EntityType> extends SQLValidationUtils<E> {
         return s.substring(0, s.length() - 1);
     }
 
-    /**
-     * @return alias name for given table in case {@link Table#alias()} is not filed then {@link Table#name()} will be used as alias
-     */
-    default String getTableAlias(Table table) {
-        return table.alias().equalsIgnoreCase("") ? table.name() : table.alias();
-    }
-
     default String getTableName(Table table) {
         return table.name();
     }
@@ -68,6 +63,10 @@ public interface SQLUtils<E extends EntityType> extends SQLValidationUtils<E> {
 
     default String addQueryKeyWord(QueryKeyWords queryKeyWords) {
         return queryKeyWords.getKeyWord();
+    }
+
+    default String addJoinType(JoinTypes joinTypes) {
+        return joinTypes.getJoinType();
     }
 
     default String addQueryKeyOperator(QueryKeyOperators queryKeyOperators) {

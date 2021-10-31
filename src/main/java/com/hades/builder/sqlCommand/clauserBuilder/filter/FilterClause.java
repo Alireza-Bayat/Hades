@@ -40,7 +40,7 @@ public class FilterClause<E extends EntityType> extends FilterElements implement
 
     @Override
     public FilterClause<E> equal(String field, String filterPhrase) {
-        super.setFilterClause(super.filterClause.concat(sqlUtils.getTableAlias(sqlUtils.getTableAnnotation(clazz)))
+        super.setFilterClause(super.filterClause.concat(sqlUtils.getTableName(sqlUtils.getTableAnnotation(clazz)))
                 .concat(sqlUtils.addQueryKeyOperator(QueryKeyOperators.DOT)).concat(field)
                 .concat(sqlUtils.addQueryKeyOperator(QueryKeyOperators.EQUAL)).concat(filterPhrase));
         return this;
@@ -49,7 +49,7 @@ public class FilterClause<E extends EntityType> extends FilterElements implement
     @Override
     public FilterClause<E> equal(Selection selection, String filterPhrase) {
         sqlUtils.fieldExistInEntity(clazz, selection);
-        super.setFilterClause(super.filterClause.concat(sqlUtils.getTableAlias(sqlUtils.getTableAnnotation(clazz)))
+        super.setFilterClause(super.filterClause.concat(sqlUtils.getTableName(sqlUtils.getTableAnnotation(clazz)))
                 .concat(sqlUtils.addQueryKeyOperator(QueryKeyOperators.DOT)).concat(selection.getFieldName())
                 .concat(sqlUtils.addQueryKeyOperator(QueryKeyOperators.EQUAL)).concat(filterPhrase));
         return this;
@@ -57,7 +57,7 @@ public class FilterClause<E extends EntityType> extends FilterElements implement
 
     @Override
     public SQLFilterClause<E> notEqual(String field, String filterPhrase) {
-        super.setFilterClause(super.filterClause.concat(sqlUtils.getTableAlias(sqlUtils.getTableAnnotation(clazz)))
+        super.setFilterClause(super.filterClause.concat(sqlUtils.getTableName(sqlUtils.getTableAnnotation(clazz)))
                 .concat(sqlUtils.addQueryKeyOperator(QueryKeyOperators.DOT)).concat(field)
                 .concat(sqlUtils.addQueryKeyOperator(QueryKeyOperators.NOT_EQUAL)).concat(filterPhrase));
         return this;
@@ -66,7 +66,7 @@ public class FilterClause<E extends EntityType> extends FilterElements implement
     @Override
     public SQLFilterClause<E> notEqual(Selection selection, String filterPhrase) {
         sqlUtils.fieldExistInEntity(clazz, selection);
-        super.setFilterClause(super.filterClause.concat(sqlUtils.getTableAlias(sqlUtils.getTableAnnotation(clazz)))
+        super.setFilterClause(super.filterClause.concat(sqlUtils.getTableName(sqlUtils.getTableAnnotation(clazz)))
                 .concat(sqlUtils.addQueryKeyOperator(QueryKeyOperators.DOT)).concat(selection.getFieldName())
                 .concat(sqlUtils.addQueryKeyOperator(QueryKeyOperators.NOT_EQUAL)).concat(filterPhrase));
         return this;
@@ -88,7 +88,7 @@ public class FilterClause<E extends EntityType> extends FilterElements implement
     @Override
     public SQLFilterClause<E> in(String field, String... items) {
         String inBlock = "";
-        inBlock = inBlock.concat(" ").concat(sqlUtils.getTableAlias(sqlUtils.getTableAnnotation(clazz)))
+        inBlock = inBlock.concat(" ").concat(sqlUtils.getTableName(sqlUtils.getTableAnnotation(clazz)))
                 .concat(sqlUtils.addQueryKeyOperator(QueryKeyOperators.DOT))
                 .concat(field).concat(sqlUtils.addQueryKeyWord(QueryKeyWords.IN))
                 .concat(sqlUtils.addQueryKeyOperator(QueryKeyOperators.OPEN_PARENTHESES))
@@ -101,7 +101,7 @@ public class FilterClause<E extends EntityType> extends FilterElements implement
     @Override
     public SQLFilterClause<E> notIn(String field, String... items) {
         String inBlock = "";
-        inBlock = inBlock.concat(" ").concat(sqlUtils.getTableAlias(sqlUtils.getTableAnnotation(clazz)))
+        inBlock = inBlock.concat(" ").concat(sqlUtils.getTableName(sqlUtils.getTableAnnotation(clazz)))
                 .concat(sqlUtils.addQueryKeyOperator(QueryKeyOperators.DOT))
                 .concat(field).concat(sqlUtils.addQueryKeyWord(QueryKeyWords.NOT_IN))
                 .concat(sqlUtils.addQueryKeyOperator(QueryKeyOperators.OPEN_PARENTHESES))

@@ -1,6 +1,7 @@
 package com.hades.builder.sqlCommand.clauserBuilder.join;
 
 import com.hades.builder.sqlCommand.clauserBuilder.filter.FilterClause;
+import com.hades.model.enumeration.relational.JoinTypes;
 import com.hades.model.type.EntityType;
 
 
@@ -16,13 +17,7 @@ public interface SQLJoinClause<E extends EntityType> {
 
     SQLJoinClause<E> where(FilterClause<E> filterClause);
 
-    SQLJoinClause<E> join(Class<?> referencedClass, String entityKey, String referencedKey);
-
-    SQLJoinClause<E> leftJoin(Class<?> referencedClass, String entityKey, String referencedKey);
-
-    SQLJoinClause<E> rightJoin(Class<?> referencedClass, String entityKey, String referencedKey);
-
-    SQLJoinClause<E> fullJoin();
+    SQLJoinClause<E> join(Class<?> referencedClass, String entityKey, String referencedKey, JoinTypes joinTypes);
 
     SQLJoinClause<E> selfJoin();
 

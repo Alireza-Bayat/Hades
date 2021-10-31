@@ -7,8 +7,7 @@ package com.hades.model.enumeration.relational;
 public enum QueryKeyWords {
 
     //TODO add other words
-    SELECT(" SELECT "), FROM(" FROM "), WHERE(" WHERE "), AND(" AND "), OR(" OR "), IN(" IN "), NOT_IN(" NOT IN "), AS(" AS "),
-    JOIN(" JOIN "), LEFT_JOIN(" LEFT JOIN "), RIGHT_JOIN(" RIGHT JOIN "), ON(" ON ");
+    SELECT(" SELECT "), FROM(" FROM "), WHERE(" WHERE "), AND(" AND "), OR(" OR "), IN(" IN "), NOT_IN(" NOT IN "), AS(" AS "),ON(" ON ");
 
     private final String keyWord;
 

@@ -2,10 +2,12 @@ package com.hades.builder.sqlCommand.clauserBuilder.join;
 
 import com.hades.builder.sqlCommand.SQLUtils;
 import com.hades.builder.sqlCommand.clauserBuilder.filter.FilterClause;
-import com.hades.model.annotation.entity.Table;
+import com.hades.model.enumeration.relational.JoinTypes;
 import com.hades.model.enumeration.relational.QueryKeyOperators;
 import com.hades.model.enumeration.relational.QueryKeyWords;
 import com.hades.model.type.EntityType;
+
+import javax.persistence.Table;
 
 /**
  * @author alireza_bayat
@@ -40,43 +42,14 @@ public class JoinClause<E extends EntityType> extends JoinElements implements SQ
     }
 
     @Override
-    public JoinClause<E> join(Class<?> referencedClass, String entityKey, String referencedKey) {
+    public JoinClause<E> join(Class<?> referencedClass, String entityKey, String referencedKey, JoinTypes joinTypes) {
         Table table = sqlUtils.getTableAnnotation(clazz);
         Table referencedTable = sqlUtils.getTableAnnotation(referencedClass);
-        super.setJoinClause(super.joinClause.concat(sqlUtils.addQueryKeyWord(QueryKeyWords.JOIN)).concat(sqlUtils.getTableName(referencedTable))
-                .concat(sqlUtils.addQueryKeyWord(QueryKeyWords.AS)).concat(sqlUtils.getTableAlias(referencedTable))
-                .concat(sqlUtils.addQueryKeyWord(QueryKeyWords.ON)).concat(sqlUtils.getTableAlias(table)).concat(sqlUtils.addQueryKeyOperator(QueryKeyOperators.DOT))
-                .concat(entityKey).concat(sqlUtils.addQueryKeyOperator(QueryKeyOperators.EQUAL)).concat(sqlUtils.getTableAlias(referencedTable))
+        super.setJoinClause(super.joinClause.concat(sqlUtils.addJoinType(joinTypes)).concat(sqlUtils.getTableName(referencedTable))
+                .concat(sqlUtils.addQueryKeyWord(QueryKeyWords.AS)).concat(sqlUtils.getTableName(referencedTable))
+                .concat(sqlUtils.addQueryKeyWord(QueryKeyWords.ON)).concat(sqlUtils.getTableName(table)).concat(sqlUtils.addQueryKeyOperator(QueryKeyOperators.DOT))
+                .concat(entityKey).concat(sqlUtils.addQueryKeyOperator(QueryKeyOperators.EQUAL)).concat(sqlUtils.getTableName(referencedTable))
                 .concat(sqlUtils.addQueryKeyOperator(QueryKeyOperators.DOT)).concat(referencedKey));
-        return this;
-    }
-
-    @Override
-    public JoinClause<E> leftJoin(Class<?> referencedClass, String entityKey, String referencedKey) {
-        Table table = sqlUtils.getTableAnnotation(clazz);
-        Table referencedTable = sqlUtils.getTableAnnotation(referencedClass);
-        super.setJoinClause(super.joinClause.concat(sqlUtils.addQueryKeyWord(QueryKeyWords.LEFT_JOIN)).concat(sqlUtils.getTableName(referencedTable))
-                .concat(sqlUtils.addQueryKeyWord(QueryKeyWords.AS)).concat(sqlUtils.getTableAlias(referencedTable))
-                .concat(sqlUtils.addQueryKeyWord(QueryKeyWords.ON)).concat(sqlUtils.getTableAlias(table)).concat(sqlUtils.addQueryKeyOperator(QueryKeyOperators.DOT))
-                .concat(entityKey).concat(sqlUtils.addQueryKeyOperator(QueryKeyOperators.EQUAL)).concat(sqlUtils.getTableAlias(referencedTable))
-                .concat(sqlUtils.addQueryKeyOperator(QueryKeyOperators.DOT)).concat(referencedKey));
-        return this;
-    }
-
-    @Override
-    public JoinClause<E> rightJoin(Class<?> referencedClass, String entityKey, String referencedKey) {
-        Table table = sqlUtils.getTableAnnotation(clazz);
-        Table referencedTable = sqlUtils.getTableAnnotation(referencedClass);
-        super.setJoinClause(super.joinClause.concat(sqlUtils.addQueryKeyWord(QueryKeyWords.RIGHT_JOIN)).concat(sqlUtils.getTableName(referencedTable))
-                .concat(sqlUtils.addQueryKeyWord(QueryKeyWords.AS)).concat(sqlUtils.getTableAlias(referencedTable))
-                .concat(sqlUtils.addQueryKeyWord(QueryKeyWords.ON)).concat(sqlUtils.getTableAlias(table)).concat(sqlUtils.addQueryKeyOperator(QueryKeyOperators.DOT))
-                .concat(entityKey).concat(sqlUtils.addQueryKeyOperator(QueryKeyOperators.EQUAL)).concat(sqlUtils.getTableAlias(referencedTable))
-                .concat(sqlUtils.addQueryKeyOperator(QueryKeyOperators.DOT)).concat(referencedKey));
-        return this;
-    }
-
-    @Override
-    public JoinClause<E> fullJoin() {
         return this;
     }
 

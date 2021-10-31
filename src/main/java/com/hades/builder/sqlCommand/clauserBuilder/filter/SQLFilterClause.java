@@ -1,8 +1,9 @@
 package com.hades.builder.sqlCommand.clauserBuilder.filter;
 
-import com.hades.model.annotation.entity.Column;
 import com.hades.model.type.EntityType;
 import com.hades.model.type.Selection;
+
+import javax.persistence.Column;
 
 /**
  * <p> operation in where clause will be handled in this interface

@@ -1,31 +1,31 @@
 package entity;
 
 import com.hades.model.type.EntityType;
-import com.hades.model.annotation.entity.Column;
-import com.hades.model.annotation.entity.Table;
-import com.hades.model.enumeration.entity.ColumnDefinition;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.sql.Timestamp;
 
-@Table(name = "sample", alias = "listing")
+@Table(name = "listing")
 public class EntitySample extends EntityType {
 
-    @Column(name = "id", columnDefinition = ColumnDefinition.DECIMAL, nullable = false, updatable = false)
+    @Column(name = "id", nullable = false, updatable = false)
     private int id;
 
-    @Column(name = "listing_type_id", columnDefinition = ColumnDefinition.DECIMAL, nullable = false, updatable = false)
+    @Column(name = "listing_type_id", nullable = false, updatable = false)
     private int sampleId;
 
-    @Column(name = "property_type_id", columnDefinition = ColumnDefinition.DECIMAL, nullable = false, updatable = false)
+    @Column(name = "property_type_id", nullable = false, updatable = false)
     private int sampleIdSecond;
 
-    @Column(name = "name", columnDefinition = ColumnDefinition.VARCHAR)
+    @Column(name = "name")
     private String name;
-    @Column(name = "family", columnDefinition = ColumnDefinition.VARCHAR)
+    @Column(name = "family")
     private String family;
-    @Column(name = "create_date", columnDefinition = ColumnDefinition.DATETIME)
+    @Column(name = "create_date")
     private Timestamp createDate;
-    @Column(name = "type", columnDefinition = ColumnDefinition.INT)
+    @Column(name = "type")
     private int type;
 
 }
