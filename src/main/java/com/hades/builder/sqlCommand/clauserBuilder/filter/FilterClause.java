@@ -1,6 +1,7 @@
 package com.hades.builder.sqlCommand.clauserBuilder.filter;
 
 import com.hades.builder.sqlCommand.SQLUtils;
+import com.hades.builder.sqlCommand.clauserBuilder.ClauseElements;
 import com.hades.model.enumeration.relational.QueryKeyOperators;
 import com.hades.model.enumeration.relational.QueryKeyWords;
 import com.hades.model.type.EntityType;
@@ -11,13 +12,15 @@ import com.hades.model.type.Selection;
  * there is 2 way to create an object of {@link FilterClause}
  * <ol>
  *     <li> create object with constructor -> {@link #FilterClause(Class)} in which developer must pass {@link Class} object of entity type</li>
- *     <li> create Object with constructor -> {@link #FilterClauseImpl()} in which developer must create {@link Class} instance by calling {@link #createInstance(EntityType)}</li>
+ *     <li> create Object with constructor -> {@link #FilterClause()} ()} in which developer must create {@link Class} instance by calling {@link #createInstance(EntityType)}</li>
  * </ol>
  *
  * @author alireza_bayat
  * created on 10/19/21
+ * @see ClauseElements
+ * @see SQLFilterClause
  */
-public class FilterClause<E extends EntityType> extends FilterElements implements SQLFilterClause<E> {
+public class FilterClause<E extends EntityType> extends ClauseElements implements SQLFilterClause<E> {
 
     //TODO probably not the best way to use it's function
     // sqlFilterClause extend was tested due to visibility of functions out of library - > ????
@@ -32,6 +35,9 @@ public class FilterClause<E extends EntityType> extends FilterElements implement
         this.clazz = clazz;
     }
 
+    public FilterClause() {
+    }
+
     @Override
     public FilterClause<E> createInstance(E e) {
         clazz = sqlUtils.getClazz(e);
@@ -40,7 +46,7 @@ public class FilterClause<E extends EntityType> extends FilterElements implement
 
     @Override
     public FilterClause<E> equal(String field, String filterPhrase) {
-        super.setFilterClause(super.filterClause.concat(sqlUtils.getTableName(sqlUtils.getTableAnnotation(clazz)))
+        super.setClause(super.clause.concat(sqlUtils.getTableName(sqlUtils.getTableAnnotation(clazz)))
                 .concat(sqlUtils.addQueryKeyOperator(QueryKeyOperators.DOT)).concat(field)
                 .concat(sqlUtils.addQueryKeyOperator(QueryKeyOperators.EQUAL)).concat(filterPhrase));
         return this;
@@ -49,7 +55,7 @@ public class FilterClause<E extends EntityType> extends FilterElements implement
     @Override
     public FilterClause<E> equal(Selection selection, String filterPhrase) {
         sqlUtils.fieldExistInEntity(clazz, selection);
-        super.setFilterClause(super.filterClause.concat(sqlUtils.getTableName(sqlUtils.getTableAnnotation(clazz)))
+        super.setClause(super.clause.concat(sqlUtils.getTableName(sqlUtils.getTableAnnotation(clazz)))
                 .concat(sqlUtils.addQueryKeyOperator(QueryKeyOperators.DOT)).concat(selection.getFieldName())
                 .concat(sqlUtils.addQueryKeyOperator(QueryKeyOperators.EQUAL)).concat(filterPhrase));
         return this;
@@ -57,7 +63,7 @@ public class FilterClause<E extends EntityType> extends FilterElements implement
 
     @Override
     public SQLFilterClause<E> notEqual(String field, String filterPhrase) {
-        super.setFilterClause(super.filterClause.concat(sqlUtils.getTableName(sqlUtils.getTableAnnotation(clazz)))
+        super.setClause(super.clause.concat(sqlUtils.getTableName(sqlUtils.getTableAnnotation(clazz)))
                 .concat(sqlUtils.addQueryKeyOperator(QueryKeyOperators.DOT)).concat(field)
                 .concat(sqlUtils.addQueryKeyOperator(QueryKeyOperators.NOT_EQUAL)).concat(filterPhrase));
         return this;
@@ -66,7 +72,7 @@ public class FilterClause<E extends EntityType> extends FilterElements implement
     @Override
     public SQLFilterClause<E> notEqual(Selection selection, String filterPhrase) {
         sqlUtils.fieldExistInEntity(clazz, selection);
-        super.setFilterClause(super.filterClause.concat(sqlUtils.getTableName(sqlUtils.getTableAnnotation(clazz)))
+        super.setClause(super.clause.concat(sqlUtils.getTableName(sqlUtils.getTableAnnotation(clazz)))
                 .concat(sqlUtils.addQueryKeyOperator(QueryKeyOperators.DOT)).concat(selection.getFieldName())
                 .concat(sqlUtils.addQueryKeyOperator(QueryKeyOperators.NOT_EQUAL)).concat(filterPhrase));
         return this;
@@ -74,13 +80,13 @@ public class FilterClause<E extends EntityType> extends FilterElements implement
 
     @Override
     public FilterClause<E> and() {
-        super.setFilterClause(super.filterClause.concat(sqlUtils.addQueryKeyWord(QueryKeyWords.AND)));
+        super.setClause(super.clause.concat(sqlUtils.addQueryKeyWord(QueryKeyWords.AND)));
         return this;
     }
 
     @Override
     public FilterClause<E> or() {
-        super.setFilterClause(super.filterClause.concat(sqlUtils.addQueryKeyWord(QueryKeyWords.OR)));
+        super.setClause(super.clause.concat(sqlUtils.addQueryKeyWord(QueryKeyWords.OR)));
         return this;
     }
 
@@ -94,7 +100,7 @@ public class FilterClause<E extends EntityType> extends FilterElements implement
                 .concat(sqlUtils.addQueryKeyOperator(QueryKeyOperators.OPEN_PARENTHESES))
                 .concat(getItemsCommaSeparated(items))
                 .concat(sqlUtils.addQueryKeyOperator(QueryKeyOperators.CLOSE_PARENTHESES));
-        super.setFilterClause(filterClause.concat(inBlock));
+        super.setClause(clause.concat(inBlock));
         return this;
     }
 
@@ -107,13 +113,13 @@ public class FilterClause<E extends EntityType> extends FilterElements implement
                 .concat(sqlUtils.addQueryKeyOperator(QueryKeyOperators.OPEN_PARENTHESES))
                 .concat(getItemsCommaSeparated(items))
                 .concat(sqlUtils.addQueryKeyOperator(QueryKeyOperators.CLOSE_PARENTHESES));
-        super.setFilterClause(filterClause.concat(inBlock));
+        super.setClause(clause.concat(inBlock));
         return this;
     }
 
     @Override
     public SQLFilterClause<E> customClause(String customClause) {
-        super.setFilterClause(filterClause.concat(" ").concat(customClause).concat(" "));
+        super.setClause(clause.concat(" ").concat(customClause).concat(" "));
         return this;
     }
 

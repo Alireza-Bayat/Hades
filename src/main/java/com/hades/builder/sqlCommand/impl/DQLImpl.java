@@ -3,6 +3,7 @@ package com.hades.builder.sqlCommand.impl;
 import com.hades.builder.sqlCommand.clauserBuilder.ClauseBuilder;
 import com.hades.builder.sqlCommand.clauserBuilder.filter.FilterClause;
 import com.hades.builder.sqlCommand.clauserBuilder.join.JoinClause;
+import com.hades.builder.sqlCommand.clauserBuilder.order.OrderClause;
 import com.hades.builder.sqlCommand.rules.SQL_DQL;
 import com.hades.model.enumeration.relational.QueryKeyOperators;
 import com.hades.model.enumeration.relational.QueryKeyWords;
@@ -79,13 +80,18 @@ public class DQLImpl<E extends EntityType> implements SQL_DQL<E> {
         appendFromClause(query, tableAnnotation.name(), tableAlias);
 
         //TODO JOIN
-        JoinClause<E> joinClause = clauseBuilder.getJoinClause();
-        query.append(joinClause.getJoinClause());
+        JoinClause<E> joinClause = (JoinClause<E>) clauseBuilder.getJoinClause();
+        query.append(joinClause.getClause());
 
         //TODO WHERE
-        FilterClause<E> filterClause = clauseBuilder.getFilterClause();
+        FilterClause<E> filterClause = (FilterClause<E>) clauseBuilder.getFilterClause();
         addQueryKeyWord(query, QueryKeyWords.WHERE);
-        query.append(filterClause.getFilterClause());
+        query.append(filterClause.getClause());
+
+        //TODO order
+        OrderClause<E> orderClause = (OrderClause<E>) clauseBuilder.getOrderClause();
+        addQueryKeyWord(query, QueryKeyWords.ORDER_BY);
+        query.append(removeLastIndexStringBuilder(orderClause.getClause()));
 
         return query.toString();
     }
@@ -112,7 +118,7 @@ public class DQLImpl<E extends EntityType> implements SQL_DQL<E> {
             declaredField.setAccessible(true);
             Column columnAnnotation = declaredField.getDeclaredAnnotation(Column.class);
             if (columnAnnotation != null)
-                query.append(tableAlias).append(addQueryKeyOperator(QueryKeyOperators.DOT)).append(columnAnnotation.name()).append(",");
+                query.append(tableAlias).append(addQueryKeyOperator(QueryKeyOperators.DOT)).append(columnAnnotation.name()).append(addQueryKeyOperator(QueryKeyOperators.COMMA));
         }
         removeLastIndexStringBuilder(query);
     }
@@ -132,7 +138,7 @@ public class DQLImpl<E extends EntityType> implements SQL_DQL<E> {
             declaredField.setAccessible(true);
             Column columnAnnotation = declaredField.getDeclaredAnnotation(Column.class);
             if (Arrays.stream(selections).anyMatch(selection -> selection.getFieldName().equalsIgnoreCase(columnAnnotation.name())))
-                query.append(tableAlias).append(addQueryKeyOperator(QueryKeyOperators.DOT)).append(columnAnnotation.name()).append(",");
+                query.append(tableAlias).append(addQueryKeyOperator(QueryKeyOperators.DOT)).append(columnAnnotation.name()).append(addQueryKeyOperator(QueryKeyOperators.COMMA));
         }
         removeLastIndexStringBuilder(query);
     }
@@ -152,7 +158,7 @@ public class DQLImpl<E extends EntityType> implements SQL_DQL<E> {
             declaredField.setAccessible(true);
             Column columnAnnotation = declaredField.getDeclaredAnnotation(Column.class);
             if (Arrays.stream(fieldsName).anyMatch(s -> s.equalsIgnoreCase(columnAnnotation.name())))
-                query.append(tableAlias).append(addQueryKeyOperator(QueryKeyOperators.DOT)).append(columnAnnotation.name()).append(",");
+                query.append(tableAlias).append(addQueryKeyOperator(QueryKeyOperators.DOT)).append(columnAnnotation.name()).append(addQueryKeyOperator(QueryKeyOperators.COMMA));
         }
         removeLastIndexStringBuilder(query);
     }

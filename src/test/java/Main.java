@@ -1,7 +1,12 @@
 import com.hades.builder.sqlCommand.clauserBuilder.ClauseBuilder;
 import com.hades.builder.sqlCommand.clauserBuilder.filter.FilterClause;
+import com.hades.builder.sqlCommand.clauserBuilder.filter.SQLFilterClause;
 import com.hades.builder.sqlCommand.clauserBuilder.join.JoinClause;
+import com.hades.builder.sqlCommand.clauserBuilder.join.SQLJoinClause;
+import com.hades.builder.sqlCommand.clauserBuilder.order.OrderClause;
+import com.hades.builder.sqlCommand.clauserBuilder.order.SQLOrderClause;
 import com.hades.model.enumeration.relational.JoinTypes;
+import com.hades.model.enumeration.relational.OrderArrange;
 import com.hades.model.type.Selection;
 import com.hades.services.RelationalServices;
 import entity.EntitySample;
@@ -39,7 +44,7 @@ public class Main {
     public void selectQueryWithCriteria() {
         RelationalServices<EntitySample> relationalServices = new RelationalServices<>();
         ClauseBuilder<EntitySample> clauseBuilder = new ClauseBuilder<>();
-        FilterClause<EntitySample> filterClause = new FilterClause<>(EntitySample.class);
+        SQLFilterClause<EntitySample> filterClause = new FilterClause<>(EntitySample.class);
         filterClause
                 .equal("id", "10000")
                 .and().equal("name", "harchi")
@@ -47,11 +52,16 @@ public class Main {
                 .and().in("id", "1", "2", "3", "4")
                 .or().notIn("id", "5", "6", "7");
 
-        JoinClause<EntitySample> joinClause = new JoinClause<EntitySample>(EntitySample.class);
+        SQLJoinClause<EntitySample> joinClause = new JoinClause<EntitySample>(EntitySample.class);
         joinClause.join(ReferencedEntitySample.class, "listing_type_id", "id", JoinTypes.LEFT_JOIN);
+
+        SQLOrderClause<EntitySample> orderClause = new OrderClause<>(EntitySample.class);
+        orderClause.order("id", null).order("family", OrderArrange.DESC);
 
         clauseBuilder.setFilterClause(filterClause);
         clauseBuilder.setJoinClause(joinClause);
+        clauseBuilder.setOrderClause(orderClause);
+
         System.out.println("select with where clause -> " + relationalServices.findAll(new EntitySample(), clauseBuilder));
     }
 

@@ -1,7 +1,8 @@
 package com.hades.builder.sqlCommand.clauserBuilder.join;
 
 import com.hades.builder.sqlCommand.SQLUtils;
-import com.hades.builder.sqlCommand.clauserBuilder.filter.FilterClause;
+import com.hades.builder.sqlCommand.clauserBuilder.ClauseElements;
+import com.hades.builder.sqlCommand.clauserBuilder.filter.SQLFilterClause;
 import com.hades.model.enumeration.relational.JoinTypes;
 import com.hades.model.enumeration.relational.QueryKeyOperators;
 import com.hades.model.enumeration.relational.QueryKeyWords;
@@ -13,7 +14,7 @@ import javax.persistence.Table;
  * @author alireza_bayat
  * created on 10/30/21
  */
-public class JoinClause<E extends EntityType> extends JoinElements implements SQLJoinClause<E> {
+public class JoinClause<E extends EntityType> extends ClauseElements implements SQLJoinClause<E> {
 
     private Class<?> clazz;
     //TODO probably not the best way to use it's function
@@ -23,6 +24,9 @@ public class JoinClause<E extends EntityType> extends JoinElements implements SQ
 
     public JoinClause(Class<?> clazz) {
         this.clazz = clazz;
+    }
+
+    public JoinClause() {
     }
 
     @Override
@@ -37,15 +41,10 @@ public class JoinClause<E extends EntityType> extends JoinElements implements SQ
     }
 
     @Override
-    public JoinClause<E> where(FilterClause<E> filterClause) {
-        return this;
-    }
-
-    @Override
-    public JoinClause<E> join(Class<?> referencedClass, String entityKey, String referencedKey, JoinTypes joinTypes) {
+    public JoinClause<E> join(Class<? extends EntityType> referencedClass, String entityKey, String referencedKey, JoinTypes joinTypes) {
         Table table = sqlUtils.getTableAnnotation(clazz);
         Table referencedTable = sqlUtils.getTableAnnotation(referencedClass);
-        super.setJoinClause(super.joinClause.concat(sqlUtils.addJoinType(joinTypes)).concat(sqlUtils.getTableName(referencedTable))
+        super.setClause(super.clause.concat(sqlUtils.addJoinType(joinTypes)).concat(sqlUtils.getTableName(referencedTable))
                 .concat(sqlUtils.addQueryKeyWord(QueryKeyWords.AS)).concat(sqlUtils.getTableName(referencedTable))
                 .concat(sqlUtils.addQueryKeyWord(QueryKeyWords.ON)).concat(sqlUtils.getTableName(table)).concat(sqlUtils.addQueryKeyOperator(QueryKeyOperators.DOT))
                 .concat(entityKey).concat(sqlUtils.addQueryKeyOperator(QueryKeyOperators.EQUAL)).concat(sqlUtils.getTableName(referencedTable))
@@ -54,13 +53,13 @@ public class JoinClause<E extends EntityType> extends JoinElements implements SQ
     }
 
     @Override
-    public JoinClause<E> selfJoin() {
-        return this;
+    public SQLJoinClause<E> join(Class<? extends EntityType> referencedClass, String entityKey, String referencedKey, JoinTypes joinTypes, SQLFilterClause<E> filterClause) {
+        return null;
     }
 
     @Override
     public SQLJoinClause<E> customJoin(String customJoin) {
-        super.setJoinClause(super.joinClause.concat(" ").concat(customJoin));
+        super.setClause(super.clause.concat(" ").concat(customJoin));
         return this;
     }
 }

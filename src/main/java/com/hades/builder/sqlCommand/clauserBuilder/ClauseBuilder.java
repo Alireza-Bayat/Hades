@@ -1,7 +1,8 @@
 package com.hades.builder.sqlCommand.clauserBuilder;
 
-import com.hades.builder.sqlCommand.clauserBuilder.filter.FilterClause;
-import com.hades.builder.sqlCommand.clauserBuilder.join.JoinClause;
+import com.hades.builder.sqlCommand.clauserBuilder.filter.SQLFilterClause;
+import com.hades.builder.sqlCommand.clauserBuilder.join.SQLJoinClause;
+import com.hades.builder.sqlCommand.clauserBuilder.order.SQLOrderClause;
 import com.hades.model.type.EntityType;
 
 /**
@@ -10,38 +11,40 @@ import com.hades.model.type.EntityType;
  */
 public class ClauseBuilder<E extends EntityType> {
 
-    FilterClause<E> filterClause;
-    JoinClause<E> joinClause;
+    SQLFilterClause<E> filterClause;
+    SQLJoinClause<E> joinClause;
+    SQLOrderClause<E> orderClause;
 
     public ClauseBuilder() {
     }
 
-    public ClauseBuilder(FilterClause<E> filterClause) {
-        this.filterClause = filterClause;
-    }
-
-    public ClauseBuilder(JoinClause<E> joinClause) {
-        this.joinClause = joinClause;
-    }
-
-    public ClauseBuilder(FilterClause<E> filterClause, JoinClause<E> joinClause) {
+    public ClauseBuilder(SQLFilterClause<E> filterClause, SQLJoinClause<E> joinClause, SQLOrderClause<E> orderClause) {
         this.filterClause = filterClause;
         this.joinClause = joinClause;
+        this.orderClause = orderClause;
     }
 
-    public FilterClause<E> getFilterClause() {
+    public SQLFilterClause<E> getFilterClause() {
         return filterClause;
     }
 
-    public void setFilterClause(FilterClause<E> filterClause) {
+    public void setFilterClause(SQLFilterClause<E> filterClause) {
         this.filterClause = filterClause;
     }
 
-    public JoinClause<E> getJoinClause() {
+    public SQLJoinClause<E> getJoinClause() {
         return joinClause;
     }
 
-    public void setJoinClause(JoinClause<E> joinClause) {
+    public void setJoinClause(SQLJoinClause<E> joinClause) {
         this.joinClause = joinClause;
+    }
+
+    public SQLOrderClause<E> getOrderClause() {
+        return orderClause;
+    }
+
+    public void setOrderClause(SQLOrderClause<E> orderClause) {
+        this.orderClause = orderClause;
     }
 }

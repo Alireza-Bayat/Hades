@@ -15,7 +15,7 @@ import javax.persistence.Table;
  * @author alireza_bayat
  * created on 10/19/21
  */
-public interface SQLUtils<E extends EntityType> extends SQLValidationUtils<E> {
+public interface SQLUtils<E extends EntityType> extends SQLValidationUtils<E>, Utils<E> {
 
     /**
      * <p> extract {@link Table} of entity if present
@@ -29,14 +29,6 @@ public interface SQLUtils<E extends EntityType> extends SQLValidationUtils<E> {
             return entity.getDeclaredAnnotation(Table.class);
         } else
             throw new AnnotationNotPresentException("Table annotation is not present on -> " + entity.getName());
-    }
-
-
-    /**
-     * <p> get class object of given entity
-     */
-    default Class<?> getClazz(E e) {
-        return e.getClass();
     }
 
     /**
