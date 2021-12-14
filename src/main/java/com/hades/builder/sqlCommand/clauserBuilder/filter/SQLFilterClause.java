@@ -77,6 +77,12 @@ public interface SQLFilterClause<E extends EntityType> {
 
     //TODO like,exists, between, not, is, null
 
+    /**
+     * <p> any customized filter that is not supported by main {@link SQLFilterClause} can be specifies by this function
+     *
+     * @param customClause any customized filter clause
+     * @return SQLFilterClause<E> object
+     */
     SQLFilterClause<E> customClause(String customClause);
 
 }

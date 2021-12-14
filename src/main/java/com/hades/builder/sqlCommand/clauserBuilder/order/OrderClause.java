@@ -34,7 +34,7 @@ public class OrderClause<E extends EntityType> extends ClauseElements implements
 
     @Override
     public OrderClause<E> order(String fieldName, OrderArrange orderArrange) {
-        super.setClause(clause.concat(fieldName).concat(sqlUtils.nullValidation(orderArrange)).concat(sqlUtils.addQueryKeyOperator(QueryKeyOperators.COMMA)));
+        super.setClause(clause.concat(sqlUtils.getTableName(sqlUtils.getTableAnnotation(clazz))).concat(sqlUtils.addQueryKeyOperator(QueryKeyOperators.DOT)).concat(fieldName).concat(sqlUtils.nullValidation(orderArrange)).concat(sqlUtils.addQueryKeyOperator(QueryKeyOperators.COMMA)));
         return this;
     }
 

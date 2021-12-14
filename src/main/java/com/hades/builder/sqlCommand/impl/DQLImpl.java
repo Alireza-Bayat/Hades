@@ -79,16 +79,16 @@ public class DQLImpl<E extends EntityType> implements SQL_DQL<E> {
 
         appendFromClause(query, tableAnnotation.name(), tableAlias);
 
-        //TODO JOIN
+        //JOIN
         JoinClause<E> joinClause = (JoinClause<E>) clauseBuilder.getJoinClause();
         query.append(joinClause.getClause());
 
-        //TODO WHERE
+        //WHERE
         FilterClause<E> filterClause = (FilterClause<E>) clauseBuilder.getFilterClause();
         addQueryKeyWord(query, QueryKeyWords.WHERE);
         query.append(filterClause.getClause());
 
-        //TODO order
+        //order
         OrderClause<E> orderClause = (OrderClause<E>) clauseBuilder.getOrderClause();
         addQueryKeyWord(query, QueryKeyWords.ORDER_BY);
         query.append(removeLastIndexStringBuilder(orderClause.getClause()));
@@ -98,7 +98,31 @@ public class DQLImpl<E extends EntityType> implements SQL_DQL<E> {
 
     @Override
     public String selectQuery(E e, ClauseBuilder<E> clauseBuilder, String... fieldsName) {
-        return null;
+        Class<?> entity = getClazz(e);
+        Table tableAnnotation = getTableAnnotation(entity);
+        String tableAlias = getTableName(tableAnnotation);
+        StringBuilder query = new StringBuilder();
+
+        addQueryKeyWord(query, QueryKeyWords.SELECT);
+        appendSelectColumns(entity.getDeclaredFields(), query, tableAlias, fieldsName);
+
+        appendFromClause(query, tableAnnotation.name(), tableAlias);
+
+        //JOIN
+        JoinClause<E> joinClause = (JoinClause<E>) clauseBuilder.getJoinClause();
+        query.append(joinClause.getClause());
+
+        //WHERE
+        FilterClause<E> filterClause = (FilterClause<E>) clauseBuilder.getFilterClause();
+        addQueryKeyWord(query, QueryKeyWords.WHERE);
+        query.append(filterClause.getClause());
+
+        //ORDER
+        OrderClause<E> orderClause = (OrderClause<E>) clauseBuilder.getOrderClause();
+        addQueryKeyWord(query, QueryKeyWords.ORDER_BY);
+        query.append(removeLastIndexStringBuilder(orderClause.getClause()));
+
+        return query.toString();
     }
 
 
@@ -127,6 +151,7 @@ public class DQLImpl<E extends EntityType> implements SQL_DQL<E> {
     /**
      * <p> will generate selected columns according to the  array of fields that given to the functions
      * and existence of filed name in {@link Selection} varargs
+     * <p> in case field name contains '.' which is equivalence for specifying alias no validation occurs on field.
      *
      * @param fields     array of fields needed to used in select query
      * @param query      queryBuilder string
@@ -134,11 +159,17 @@ public class DQLImpl<E extends EntityType> implements SQL_DQL<E> {
      * @param selections {@link Selection} varargs of fieldNames
      */
     private void appendSelectColumns(Field[] fields, StringBuilder query, String tableAlias, Selection... selections) {
-        for (Field declaredField : fields) {
-            declaredField.setAccessible(true);
-            Column columnAnnotation = declaredField.getDeclaredAnnotation(Column.class);
-            if (Arrays.stream(selections).anyMatch(selection -> selection.getFieldName().equalsIgnoreCase(columnAnnotation.name())))
-                query.append(tableAlias).append(addQueryKeyOperator(QueryKeyOperators.DOT)).append(columnAnnotation.name()).append(addQueryKeyOperator(QueryKeyOperators.COMMA));
+        for (Selection s : selections) {
+            if (s.getFieldName().contains(".")) {
+                query.append(s).append(addQueryKeyOperator(QueryKeyOperators.COMMA));
+                continue;
+            }
+            Arrays.stream(fields).forEach(field -> {
+                field.setAccessible(true);
+                Column columnAnnotation = field.getDeclaredAnnotation(Column.class);
+                if (columnAnnotation.name().equalsIgnoreCase(s.getFieldName()))
+                    query.append(tableAlias).append(addQueryKeyOperator(QueryKeyOperators.DOT)).append(columnAnnotation.name()).append(addQueryKeyOperator(QueryKeyOperators.COMMA));
+            });
         }
         removeLastIndexStringBuilder(query);
     }
@@ -147,6 +178,7 @@ public class DQLImpl<E extends EntityType> implements SQL_DQL<E> {
     /**
      * <p> will generate selected columns according to the  array of fields that given to the functions
      * and existence of filed name in String varargs
+     * <p> in case field name contains '.' which is equivalence for specifying alias no validation occurs on field.
      *
      * @param fields     array of fields needed to used in select query
      * @param query      queryBuilder string
@@ -154,11 +186,17 @@ public class DQLImpl<E extends EntityType> implements SQL_DQL<E> {
      * @param fieldsName String varargs of fieldName
      */
     private void appendSelectColumns(Field[] fields, StringBuilder query, String tableAlias, String... fieldsName) {
-        for (Field declaredField : fields) {
-            declaredField.setAccessible(true);
-            Column columnAnnotation = declaredField.getDeclaredAnnotation(Column.class);
-            if (Arrays.stream(fieldsName).anyMatch(s -> s.equalsIgnoreCase(columnAnnotation.name())))
-                query.append(tableAlias).append(addQueryKeyOperator(QueryKeyOperators.DOT)).append(columnAnnotation.name()).append(addQueryKeyOperator(QueryKeyOperators.COMMA));
+        for (String s : fieldsName) {
+            if (s.contains(".")) {
+                query.append(s).append(addQueryKeyOperator(QueryKeyOperators.COMMA));
+                continue;
+            }
+            Arrays.stream(fields).forEach(field -> {
+                field.setAccessible(true);
+                Column columnAnnotation = field.getDeclaredAnnotation(Column.class);
+                if (columnAnnotation.name().equalsIgnoreCase(s))
+                    query.append(tableAlias).append(addQueryKeyOperator(QueryKeyOperators.DOT)).append(columnAnnotation.name()).append(addQueryKeyOperator(QueryKeyOperators.COMMA));
+            });
         }
         removeLastIndexStringBuilder(query);
     }

@@ -65,4 +65,30 @@ public class Main {
         System.out.println("select with where clause -> " + relationalServices.findAll(new EntitySample(), clauseBuilder));
     }
 
+    @Test
+    public void selectQueryWithCriteriaCustomized() {
+        RelationalServices<EntitySample> relationalServices = new RelationalServices<>();
+        ClauseBuilder<EntitySample> clauseBuilder = new ClauseBuilder<>();
+        SQLFilterClause<EntitySample> filterClause = new FilterClause<>(EntitySample.class);
+        filterClause
+                .equal("id", "10000")
+                .and().equal("name", "harchi")
+                .or().equal("family", "harchiiii")
+                .and().in("id", "1", "2", "3", "4")
+                .or().notIn("id", "5", "6", "7")
+        .or().customClause("listing.id = 1").and().customClause("listing_type.create_date is not null");
+
+        SQLJoinClause<EntitySample> joinClause = new JoinClause<EntitySample>(EntitySample.class);
+        joinClause.join(ReferencedEntitySample.class, "listing_type_id", "id", JoinTypes.LEFT_JOIN);
+
+        SQLOrderClause<EntitySample> orderClause = new OrderClause<>(EntitySample.class);
+        orderClause.order("id", null).order("family", OrderArrange.DESC);
+
+        clauseBuilder.setFilterClause(filterClause);
+        clauseBuilder.setJoinClause(joinClause);
+        clauseBuilder.setOrderClause(orderClause);
+
+        System.out.println("select with where clause customized -> " + relationalServices.findAll(new EntitySample(), clauseBuilder,"listing_type.id","listing.id"));
+    }
+
 }
