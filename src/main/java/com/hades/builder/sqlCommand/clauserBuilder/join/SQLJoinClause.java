@@ -15,7 +15,6 @@ public interface SQLJoinClause<E extends EntityType> {
     /**
      * <p>create instance {@link Class} of given entity to be used in Join clauses
      *
-     * @param e passed entity object
      * @return SQLJoinClause<E> object
      */
     SQLJoinClause<E> createInstance(E e);
@@ -32,7 +31,6 @@ public interface SQLJoinClause<E extends EntityType> {
      * <code> LEFT JOIN listing_type AS listing_type ON listing.listing_type_id = listing_type.id </code>
      *
      * @param referencedClass entity table class referenced
-     * @param entityKey       E key to be used in join
      * @param referencedKey   referenced class key to be used in join
      * @param joinTypes       {@link JoinTypes}
      * @return SQLJoinClause
@@ -51,7 +49,6 @@ public interface SQLJoinClause<E extends EntityType> {
      * <code> LEFT JOIN listing_type AS listing_type ON listing.listing_type_id = listing_type.id AND listing.id != 1000000 </code>
      *
      * @param referencedClass entity table class referenced
-     * @param entityKey       E key to be used in join
      * @param referencedKey   referenced class key to be used in join
      * @param joinTypes       {@link JoinTypes}
      * @param filterClause    manage where clause of join

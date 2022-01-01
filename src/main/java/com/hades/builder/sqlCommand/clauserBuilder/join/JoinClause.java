@@ -1,5 +1,6 @@
 package com.hades.builder.sqlCommand.clauserBuilder.join;
 
+import com.hades.builder.sqlCommand.SQLUtilities;
 import com.hades.builder.sqlCommand.SQLUtils;
 import com.hades.builder.sqlCommand.clauserBuilder.ClauseElements;
 import com.hades.builder.sqlCommand.clauserBuilder.filter.SQLFilterClause;
@@ -17,10 +18,7 @@ import javax.persistence.Table;
 public class JoinClause<E extends EntityType> extends ClauseElements implements SQLJoinClause<E> {
 
     private Class<?> clazz;
-    //TODO probably not the best way to use it's function
-    // sqlFilterClause extend was tested due to visibility of functions out of library - > ????
-    private final SQLUtils<E> sqlUtils = new SQLUtils<E>() {
-    };
+    private final SQLUtilities<E> sqlUtils = new SQLUtilities<E>();
 
     public JoinClause(Class<?> clazz) {
         this.clazz = clazz;

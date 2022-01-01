@@ -31,7 +31,7 @@ public interface SQLFilterClause<E extends EntityType> {
      * @param filterPhrase filtered value in field
      * @return SQLFilterClause<E> object
      */
-    SQLFilterClause<E> equal(String field, String filterPhrase);
+    SQLFilterClause<E> equal(String field, Object filterPhrase);
 
     /**
      * <p> equal operand in standard query language
@@ -41,7 +41,7 @@ public interface SQLFilterClause<E extends EntityType> {
      * @param filterPhrase filtered value in field
      * @return SQLFilterClause<E> object
      */
-    SQLFilterClause<E> equal(Selection selection, String filterPhrase);
+    SQLFilterClause<E> equal(Selection selection, Object filterPhrase);
 
     /**
      * <p> not equal operand in standard query language
@@ -51,7 +51,7 @@ public interface SQLFilterClause<E extends EntityType> {
      * @param filterPhrase filtered value in field
      * @return SQLFilterClause<E> object
      */
-    SQLFilterClause<E> notEqual(String field, String filterPhrase);
+    SQLFilterClause<E> notEqual(String field, Object filterPhrase);
 
     /**
      * <p> equal operand in standard query language
@@ -61,7 +61,7 @@ public interface SQLFilterClause<E extends EntityType> {
      * @param filterPhrase filtered value in field
      * @return SQLFilterClause<E> object
      */
-    SQLFilterClause<E> notEqual(Selection selection, String filterPhrase);
+    SQLFilterClause<E> notEqual(Selection selection, Object filterPhrase);
 
     //TODO AND multi ()
     SQLFilterClause<E> and();
@@ -69,11 +69,14 @@ public interface SQLFilterClause<E extends EntityType> {
     //TODO OR multi()
     SQLFilterClause<E> or();
 
-    //TODO in with inner select
-    SQLFilterClause<E> in(String field, String... items);
+    SQLFilterClause<E> in(String field, Object... items);
+
+    SQLFilterClause<E> in(String field);
 
     //TODO not in with inner select
-    SQLFilterClause<E> notIn(String field, String... items);
+    SQLFilterClause<E> notIn(String field, Object... items);
+
+    SQLFilterClause<E> innerSelect();
 
     //TODO like,exists, between, not, is, null
 

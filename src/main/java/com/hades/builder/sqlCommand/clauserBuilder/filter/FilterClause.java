@@ -1,5 +1,6 @@
 package com.hades.builder.sqlCommand.clauserBuilder.filter;
 
+import com.hades.builder.sqlCommand.SQLUtilities;
 import com.hades.builder.sqlCommand.SQLUtils;
 import com.hades.builder.sqlCommand.clauserBuilder.ClauseElements;
 import com.hades.model.enumeration.relational.QueryKeyOperators;
@@ -22,10 +23,7 @@ import com.hades.model.type.Selection;
  */
 public class FilterClause<E extends EntityType> extends ClauseElements implements SQLFilterClause<E> {
 
-    //TODO probably not the best way to use it's function
-    // sqlFilterClause extend was tested due to visibility of functions out of library - > ????
-    private final SQLUtils<E> sqlUtils = new SQLUtils<E>() {
-    };
+    private final SQLUtilities<E> sqlUtils = new SQLUtilities<E>();
     private Class<?> clazz;
 
     /**
@@ -45,36 +43,36 @@ public class FilterClause<E extends EntityType> extends ClauseElements implement
     }
 
     @Override
-    public FilterClause<E> equal(String field, String filterPhrase) {
+    public FilterClause<E> equal(String field, Object filterPhrase) {
         super.setClause(super.clause.concat(sqlUtils.getTableName(sqlUtils.getTableAnnotation(clazz)))
                 .concat(sqlUtils.addQueryKeyOperator(QueryKeyOperators.DOT)).concat(field)
-                .concat(sqlUtils.addQueryKeyOperator(QueryKeyOperators.EQUAL)).concat(filterPhrase));
+                .concat(sqlUtils.addQueryKeyOperator(QueryKeyOperators.EQUAL)).concat(sqlUtils.getFieldType(filterPhrase)));
         return this;
     }
 
     @Override
-    public FilterClause<E> equal(Selection selection, String filterPhrase) {
+    public FilterClause<E> equal(Selection selection, Object filterPhrase) {
         sqlUtils.fieldExistInEntity(clazz, selection);
         super.setClause(super.clause.concat(sqlUtils.getTableName(sqlUtils.getTableAnnotation(clazz)))
                 .concat(sqlUtils.addQueryKeyOperator(QueryKeyOperators.DOT)).concat(selection.getFieldName())
-                .concat(sqlUtils.addQueryKeyOperator(QueryKeyOperators.EQUAL)).concat(filterPhrase));
+                .concat(sqlUtils.addQueryKeyOperator(QueryKeyOperators.EQUAL)).concat(sqlUtils.getFieldType(filterPhrase)));
         return this;
     }
 
     @Override
-    public SQLFilterClause<E> notEqual(String field, String filterPhrase) {
+    public SQLFilterClause<E> notEqual(String field, Object filterPhrase) {
         super.setClause(super.clause.concat(sqlUtils.getTableName(sqlUtils.getTableAnnotation(clazz)))
                 .concat(sqlUtils.addQueryKeyOperator(QueryKeyOperators.DOT)).concat(field)
-                .concat(sqlUtils.addQueryKeyOperator(QueryKeyOperators.NOT_EQUAL)).concat(filterPhrase));
+                .concat(sqlUtils.addQueryKeyOperator(QueryKeyOperators.NOT_EQUAL)).concat(sqlUtils.getFieldType(filterPhrase)));
         return this;
     }
 
     @Override
-    public SQLFilterClause<E> notEqual(Selection selection, String filterPhrase) {
+    public SQLFilterClause<E> notEqual(Selection selection, Object filterPhrase) {
         sqlUtils.fieldExistInEntity(clazz, selection);
         super.setClause(super.clause.concat(sqlUtils.getTableName(sqlUtils.getTableAnnotation(clazz)))
                 .concat(sqlUtils.addQueryKeyOperator(QueryKeyOperators.DOT)).concat(selection.getFieldName())
-                .concat(sqlUtils.addQueryKeyOperator(QueryKeyOperators.NOT_EQUAL)).concat(filterPhrase));
+                .concat(sqlUtils.addQueryKeyOperator(QueryKeyOperators.NOT_EQUAL)).concat(sqlUtils.getFieldType(filterPhrase)));
         return this;
     }
 
@@ -92,7 +90,7 @@ public class FilterClause<E extends EntityType> extends ClauseElements implement
 
     //TODO refactor
     @Override
-    public SQLFilterClause<E> in(String field, String... items) {
+    public SQLFilterClause<E> in(String field, Object... items) {
         String inBlock = "";
         inBlock = inBlock.concat(" ").concat(sqlUtils.getTableName(sqlUtils.getTableAnnotation(clazz)))
                 .concat(sqlUtils.addQueryKeyOperator(QueryKeyOperators.DOT))
@@ -105,7 +103,12 @@ public class FilterClause<E extends EntityType> extends ClauseElements implement
     }
 
     @Override
-    public SQLFilterClause<E> notIn(String field, String... items) {
+    public SQLFilterClause<E> in(String field) {
+        return null;
+    }
+
+    @Override
+    public SQLFilterClause<E> notIn(String field, Object... items) {
         String inBlock = "";
         inBlock = inBlock.concat(" ").concat(sqlUtils.getTableName(sqlUtils.getTableAnnotation(clazz)))
                 .concat(sqlUtils.addQueryKeyOperator(QueryKeyOperators.DOT))
@@ -118,17 +121,23 @@ public class FilterClause<E extends EntityType> extends ClauseElements implement
     }
 
     @Override
+    public SQLFilterClause<E> innerSelect() {
+        return null;
+    }
+
+    @Override
     public SQLFilterClause<E> customClause(String customClause) {
         super.setClause(clause.concat(" ").concat(customClause).concat(" "));
         return this;
     }
 
-    //general functions
-    private String getItemsCommaSeparated(String... items) {
+    private String getItemsCommaSeparated(Object... items) {
         String commaSeparated = "";
-        for (String item : items)
-            commaSeparated = commaSeparated.concat(item).concat(",");
+        for (Object item : items)
+            commaSeparated = commaSeparated.concat(sqlUtils.getFieldType(item)).concat(",");
         commaSeparated = sqlUtils.removeLastIndexStringBuilder(commaSeparated);
         return commaSeparated;
     }
+
+
 }

@@ -1,5 +1,6 @@
 package com.hades.builder.sqlCommand.clauserBuilder.order;
 
+import com.hades.builder.sqlCommand.SQLUtilities;
 import com.hades.builder.sqlCommand.SQLUtils;
 import com.hades.builder.sqlCommand.clauserBuilder.ClauseElements;
 import com.hades.model.enumeration.relational.OrderArrange;
@@ -14,10 +15,7 @@ import com.hades.model.type.Selection;
 public class OrderClause<E extends EntityType> extends ClauseElements implements SQLOrderClause<E> {
 
     private Class<?> clazz;
-    //TODO probably not the best way to use it's function
-    // sqlFilterClause extend was tested due to visibility of functions out of library - > ????
-    private final SQLUtils<E> sqlUtils = new SQLUtils<E>() {
-    };
+    private final SQLUtilities<E> sqlUtils = new SQLUtilities<E>();
 
     public OrderClause(Class<?> clazz) {
         this.clazz = clazz;
