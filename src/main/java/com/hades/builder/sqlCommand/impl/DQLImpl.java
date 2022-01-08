@@ -79,19 +79,7 @@ public class DQLImpl<E extends EntityType> implements SQL_DQL<E> {
 
         appendFromClause(query, tableAnnotation.name(), tableAlias);
 
-        //JOIN
-        JoinClause<E> joinClause = (JoinClause<E>) clauseBuilder.getJoinClause();
-        query.append(joinClause.getClause());
-
-        //WHERE
-        FilterClause<E> filterClause = (FilterClause<E>) clauseBuilder.getFilterClause();
-        addQueryKeyWord(query, QueryKeyWords.WHERE);
-        query.append(filterClause.getClause());
-
-        //order
-        OrderClause<E> orderClause = (OrderClause<E>) clauseBuilder.getOrderClause();
-        addQueryKeyWord(query, QueryKeyWords.ORDER_BY);
-        query.append(removeLastIndexStringBuilder(orderClause.getClause()));
+        appendClauseBuilders(clauseBuilder, query);
 
         return query.toString();
     }
@@ -108,19 +96,7 @@ public class DQLImpl<E extends EntityType> implements SQL_DQL<E> {
 
         appendFromClause(query, tableAnnotation.name(), tableAlias);
 
-        //JOIN
-        JoinClause<E> joinClause = (JoinClause<E>) clauseBuilder.getJoinClause();
-        query.append(joinClause.getClause());
-
-        //WHERE
-        FilterClause<E> filterClause = (FilterClause<E>) clauseBuilder.getFilterClause();
-        addQueryKeyWord(query, QueryKeyWords.WHERE);
-        query.append(filterClause.getClause());
-
-        //ORDER
-        OrderClause<E> orderClause = (OrderClause<E>) clauseBuilder.getOrderClause();
-        addQueryKeyWord(query, QueryKeyWords.ORDER_BY);
-        query.append(removeLastIndexStringBuilder(orderClause.getClause()));
+        appendClauseBuilders(clauseBuilder, query);
 
         return query.toString();
     }
@@ -216,6 +192,33 @@ public class DQLImpl<E extends EntityType> implements SQL_DQL<E> {
         query.append(tableAlias);
 
     }
+
+    //<editor-fold defaultstate="collapsed" desc="CLAUSE_BUILDERS">
+    private void appendClauseBuilders(ClauseBuilder<E> clauseBuilder, StringBuilder query) {
+        appendJoinClause((JoinClause<E>) clauseBuilder.getJoinClause(), query);
+        appendFilterClause((FilterClause<E>) clauseBuilder.getFilterClause(), query);
+        appendOrderClause((OrderClause<E>) clauseBuilder.getOrderClause(), query);
+    }
+
+    private void appendJoinClause(JoinClause<E> joinClause, StringBuilder query) {
+        if (joinClause != null && joinClause.getClause() != null)
+            query.append(joinClause.getClause());
+    }
+
+    private void appendFilterClause(FilterClause<E> filterClause, StringBuilder query) {
+        if (filterClause != null && filterClause.getClause() != null) {
+            addQueryKeyWord(query, QueryKeyWords.WHERE);
+            query.append(filterClause.getClause());
+        }
+    }
+
+    private void appendOrderClause(OrderClause<E> orderClause, StringBuilder query) {
+        if (orderClause != null && orderClause.getClause() != null) {
+            addQueryKeyWord(query, QueryKeyWords.ORDER_BY);
+            query.append(removeLastIndexStringBuilder(orderClause.getClause()));
+        }
+    }
+    //</editor-fold>
 
 
     //</editor-fold>

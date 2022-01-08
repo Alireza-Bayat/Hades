@@ -71,10 +71,11 @@ public interface SQLFilterClause<E extends EntityType> {
 
     SQLFilterClause<E> in(String field, Object... items);
 
-    SQLFilterClause<E> in(String field);
+    SQLFilterClause<E> in(String field, String customQuery);
 
-    //TODO not in with inner select
     SQLFilterClause<E> notIn(String field, Object... items);
+
+    SQLFilterClause<E> notIn(String field, String customQuery);
 
     SQLFilterClause<E> innerSelect();
 

@@ -103,8 +103,13 @@ public class FilterClause<E extends EntityType> extends ClauseElements implement
     }
 
     @Override
-    public SQLFilterClause<E> in(String field) {
-        return null;
+    public SQLFilterClause<E> in(String field, String customQuery) {
+        super.setClause(clause.concat(" ").concat(sqlUtils.getTableName(sqlUtils.getTableAnnotation(clazz))
+                .concat(sqlUtils.addQueryKeyOperator(QueryKeyOperators.DOT))
+                .concat(field).concat(sqlUtils.addQueryKeyWord(QueryKeyWords.IN))
+                .concat(sqlUtils.addQueryKeyOperator(QueryKeyOperators.OPEN_PARENTHESES))
+                .concat(customQuery).concat(sqlUtils.addQueryKeyOperator(QueryKeyOperators.CLOSE_PARENTHESES))));
+        return this;
     }
 
     @Override
@@ -117,6 +122,16 @@ public class FilterClause<E extends EntityType> extends ClauseElements implement
                 .concat(getItemsCommaSeparated(items))
                 .concat(sqlUtils.addQueryKeyOperator(QueryKeyOperators.CLOSE_PARENTHESES));
         super.setClause(clause.concat(inBlock));
+        return this;
+    }
+
+    @Override
+    public SQLFilterClause<E> notIn(String field, String customQuery) {
+        super.setClause(clause.concat(" ").concat(sqlUtils.getTableName(sqlUtils.getTableAnnotation(clazz))
+                .concat(sqlUtils.addQueryKeyOperator(QueryKeyOperators.DOT))
+                .concat(field).concat(sqlUtils.addQueryKeyWord(QueryKeyWords.NOT_IN))
+                .concat(sqlUtils.addQueryKeyOperator(QueryKeyOperators.OPEN_PARENTHESES))
+                .concat(customQuery).concat(sqlUtils.addQueryKeyOperator(QueryKeyOperators.CLOSE_PARENTHESES))));
         return this;
     }
 

@@ -11,6 +11,7 @@ import com.hades.model.type.Selection;
 import com.hades.services.RelationalServices;
 import entity.EntitySample;
 import entity.ReferencedEntitySample;
+import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -89,6 +90,20 @@ public class Main {
         clauseBuilder.setOrderClause(orderClause);
 
         System.out.println("select with where clause customized -> " + relationalServices.findAll(new EntitySample(), clauseBuilder, "listing_type.id", "listing.id"));
+    }
+
+
+    @Test
+    public void inAndNotInQueries() {
+        RelationalServices<EntitySample> relationalServices = new RelationalServices<>();
+        ClauseBuilder<EntitySample> clauseBuilder = new ClauseBuilder<>();
+        SQLFilterClause<EntitySample> filterClause = new FilterClause<>(EntitySample.class);
+
+        filterClause.in("property_type_id", "select id from propertyTypes").and().notIn("listing_type_id", 1, 2);
+        clauseBuilder.setFilterClause(filterClause);
+
+//        Assert.assertEquals("");
+        System.out.println(relationalServices.findAll(new EntitySample(), clauseBuilder));
     }
 
 }
