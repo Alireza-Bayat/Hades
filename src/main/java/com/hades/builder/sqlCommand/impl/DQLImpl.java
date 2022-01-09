@@ -3,6 +3,7 @@ package com.hades.builder.sqlCommand.impl;
 import com.hades.builder.sqlCommand.clauserBuilder.ClauseBuilder;
 import com.hades.builder.sqlCommand.clauserBuilder.filter.FilterClause;
 import com.hades.builder.sqlCommand.clauserBuilder.join.JoinClause;
+import com.hades.builder.sqlCommand.clauserBuilder.order.OrderClause;
 import com.hades.builder.sqlCommand.rules.SQL_DQL;
 import com.hades.model.enumeration.relational.QueryKeyOperators;
 import com.hades.model.enumeration.relational.QueryKeyWords;
@@ -35,7 +36,6 @@ public class DQLImpl<E extends EntityType> implements SQL_DQL<E> {
         return query.toString();
     }
 
-    //TODO some custom select fields
     @Override
     public String selectQuery(E e, String... fieldsName) {
         Class<?> entity = getClazz(e);
@@ -78,21 +78,26 @@ public class DQLImpl<E extends EntityType> implements SQL_DQL<E> {
 
         appendFromClause(query, tableAnnotation.name(), tableAlias);
 
-        //TODO JOIN
-        JoinClause<E> joinClause = clauseBuilder.getJoinClause();
-        query.append(joinClause.getJoinClause());
-
-        //TODO WHERE
-        FilterClause<E> filterClause = clauseBuilder.getFilterClause();
-        addQueryKeyWord(query, QueryKeyWords.WHERE);
-        query.append(filterClause.getFilterClause());
+        appendClauseBuilders(clauseBuilder, query);
 
         return query.toString();
     }
 
     @Override
     public String selectQuery(E e, ClauseBuilder<E> clauseBuilder, String... fieldsName) {
-        return null;
+        Class<?> entity = getClazz(e);
+        Table tableAnnotation = getTableAnnotation(entity);
+        String tableAlias = getTableName(tableAnnotation);
+        StringBuilder query = new StringBuilder();
+
+        addQueryKeyWord(query, QueryKeyWords.SELECT);
+        appendSelectColumns(entity.getDeclaredFields(), query, tableAlias, fieldsName);
+
+        appendFromClause(query, tableAnnotation.name(), tableAlias);
+
+        appendClauseBuilders(clauseBuilder, query);
+
+        return query.toString();
     }
 
 
@@ -112,7 +117,7 @@ public class DQLImpl<E extends EntityType> implements SQL_DQL<E> {
             declaredField.setAccessible(true);
             Column columnAnnotation = declaredField.getDeclaredAnnotation(Column.class);
             if (columnAnnotation != null)
-                query.append(tableAlias).append(addQueryKeyOperator(QueryKeyOperators.DOT)).append(columnAnnotation.name()).append(",");
+                query.append(tableAlias).append(addQueryKeyOperator(QueryKeyOperators.DOT)).append(columnAnnotation.name()).append(addQueryKeyOperator(QueryKeyOperators.COMMA));
         }
         removeLastIndexStringBuilder(query);
     }
@@ -121,6 +126,7 @@ public class DQLImpl<E extends EntityType> implements SQL_DQL<E> {
     /**
      * <p> will generate selected columns according to the  array of fields that given to the functions
      * and existence of filed name in {@link Selection} varargs
+     * <p> in case field name contains '.' which is equivalence for specifying alias no validation occurs on field.
      *
      * @param fields     array of fields needed to used in select query
      * @param query      queryBuilder string
@@ -128,11 +134,17 @@ public class DQLImpl<E extends EntityType> implements SQL_DQL<E> {
      * @param selections {@link Selection} varargs of fieldNames
      */
     private void appendSelectColumns(Field[] fields, StringBuilder query, String tableAlias, Selection... selections) {
-        for (Field declaredField : fields) {
-            declaredField.setAccessible(true);
-            Column columnAnnotation = declaredField.getDeclaredAnnotation(Column.class);
-            if (Arrays.stream(selections).anyMatch(selection -> selection.getFieldName().equalsIgnoreCase(columnAnnotation.name())))
-                query.append(tableAlias).append(addQueryKeyOperator(QueryKeyOperators.DOT)).append(columnAnnotation.name()).append(",");
+        for (Selection s : selections) {
+            if (s.getFieldName().contains(".")) {
+                query.append(s).append(addQueryKeyOperator(QueryKeyOperators.COMMA));
+                continue;
+            }
+            Arrays.stream(fields).forEach(field -> {
+                field.setAccessible(true);
+                Column columnAnnotation = field.getDeclaredAnnotation(Column.class);
+                if (columnAnnotation.name().equalsIgnoreCase(s.getFieldName()))
+                    query.append(tableAlias).append(addQueryKeyOperator(QueryKeyOperators.DOT)).append(columnAnnotation.name()).append(addQueryKeyOperator(QueryKeyOperators.COMMA));
+            });
         }
         removeLastIndexStringBuilder(query);
     }
@@ -141,6 +153,7 @@ public class DQLImpl<E extends EntityType> implements SQL_DQL<E> {
     /**
      * <p> will generate selected columns according to the  array of fields that given to the functions
      * and existence of filed name in String varargs
+     * <p> in case field name contains '.' which is equivalence for specifying alias no validation occurs on field.
      *
      * @param fields     array of fields needed to used in select query
      * @param query      queryBuilder string
@@ -148,11 +161,17 @@ public class DQLImpl<E extends EntityType> implements SQL_DQL<E> {
      * @param fieldsName String varargs of fieldName
      */
     private void appendSelectColumns(Field[] fields, StringBuilder query, String tableAlias, String... fieldsName) {
-        for (Field declaredField : fields) {
-            declaredField.setAccessible(true);
-            Column columnAnnotation = declaredField.getDeclaredAnnotation(Column.class);
-            if (Arrays.stream(fieldsName).anyMatch(s -> s.equalsIgnoreCase(columnAnnotation.name())))
-                query.append(tableAlias).append(addQueryKeyOperator(QueryKeyOperators.DOT)).append(columnAnnotation.name()).append(",");
+        for (String s : fieldsName) {
+            if (s.contains(".")) {
+                query.append(s).append(addQueryKeyOperator(QueryKeyOperators.COMMA));
+                continue;
+            }
+            Arrays.stream(fields).forEach(field -> {
+                field.setAccessible(true);
+                Column columnAnnotation = field.getDeclaredAnnotation(Column.class);
+                if (columnAnnotation.name().equalsIgnoreCase(s))
+                    query.append(tableAlias).append(addQueryKeyOperator(QueryKeyOperators.DOT)).append(columnAnnotation.name()).append(addQueryKeyOperator(QueryKeyOperators.COMMA));
+            });
         }
         removeLastIndexStringBuilder(query);
     }
@@ -172,6 +191,33 @@ public class DQLImpl<E extends EntityType> implements SQL_DQL<E> {
         query.append(tableAlias);
 
     }
+
+    //<editor-fold defaultstate="collapsed" desc="CLAUSE_BUILDERS">
+    private void appendClauseBuilders(ClauseBuilder<E> clauseBuilder, StringBuilder query) {
+        appendJoinClause((JoinClause<E>) clauseBuilder.getJoinClause(), query);
+        appendFilterClause((FilterClause<E>) clauseBuilder.getFilterClause(), query);
+        appendOrderClause((OrderClause<E>) clauseBuilder.getOrderClause(), query);
+    }
+
+    private void appendJoinClause(JoinClause<E> joinClause, StringBuilder query) {
+        if (joinClause != null && joinClause.getClause() != null)
+            query.append(joinClause.getClause());
+    }
+
+    private void appendFilterClause(FilterClause<E> filterClause, StringBuilder query) {
+        if (filterClause != null && filterClause.getClause() != null) {
+            addQueryKeyWord(query, QueryKeyWords.WHERE);
+            query.append(filterClause.getClause());
+        }
+    }
+
+    private void appendOrderClause(OrderClause<E> orderClause, StringBuilder query) {
+        if (orderClause != null && orderClause.getClause() != null) {
+            addQueryKeyWord(query, QueryKeyWords.ORDER_BY);
+            query.append(removeLastIndexStringBuilder(orderClause.getClause()));
+        }
+    }
+    //</editor-fold>
 
 
     //</editor-fold>

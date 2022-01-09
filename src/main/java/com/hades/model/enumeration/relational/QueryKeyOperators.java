@@ -6,7 +6,7 @@ package com.hades.model.enumeration.relational;
  */
 public enum QueryKeyOperators {
 
-    EQUAL(" = "), NOT_EQUAL(" != "), OPEN_PARENTHESES(" ("), CLOSE_PARENTHESES(") "), DOT(".");
+    EQUAL(" = "), NOT_EQUAL(" != "), OPEN_PARENTHESES(" ("), CLOSE_PARENTHESES(") "), DOT("."), COMMA(",");
 
     private final String operator;
 

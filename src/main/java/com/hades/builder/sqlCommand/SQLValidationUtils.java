@@ -24,6 +24,6 @@ public interface SQLValidationUtils<E extends EntityType> {
 
     default void extractObjectType(Object filterPhrase) {
 
-
+        //TODO !??!!?!?!?!
     }
 }

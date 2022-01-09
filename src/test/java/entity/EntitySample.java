@@ -3,13 +3,14 @@ package entity;
 import com.hades.model.type.EntityType;
 
 import javax.persistence.Column;
-import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.Table;
 import java.sql.Timestamp;
 
 @Table(name = "listing")
 public class EntitySample extends EntityType {
 
+    @Id
     @Column(name = "id", nullable = false, updatable = false)
     private int id;
 

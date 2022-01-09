@@ -31,7 +31,7 @@ public interface SQLFilterClause<E extends EntityType> {
      * @param filterPhrase filtered value in field
      * @return SQLFilterClause<E> object
      */
-    SQLFilterClause<E> equal(String field, String filterPhrase);
+    SQLFilterClause<E> equal(String field, Object filterPhrase);
 
     /**
      * <p> equal operand in standard query language
@@ -41,7 +41,7 @@ public interface SQLFilterClause<E extends EntityType> {
      * @param filterPhrase filtered value in field
      * @return SQLFilterClause<E> object
      */
-    SQLFilterClause<E> equal(Selection selection, String filterPhrase);
+    SQLFilterClause<E> equal(Selection selection, Object filterPhrase);
 
     /**
      * <p> not equal operand in standard query language
@@ -51,7 +51,7 @@ public interface SQLFilterClause<E extends EntityType> {
      * @param filterPhrase filtered value in field
      * @return SQLFilterClause<E> object
      */
-    SQLFilterClause<E> notEqual(String field, String filterPhrase);
+    SQLFilterClause<E> notEqual(String field, Object filterPhrase);
 
     /**
      * <p> equal operand in standard query language
@@ -61,22 +61,50 @@ public interface SQLFilterClause<E extends EntityType> {
      * @param filterPhrase filtered value in field
      * @return SQLFilterClause<E> object
      */
-    SQLFilterClause<E> notEqual(Selection selection, String filterPhrase);
+    SQLFilterClause<E> notEqual(Selection selection, Object filterPhrase);
 
-    //TODO AND multi ()
+    /**
+     * to append `and` key word in where clause
+     */
     SQLFilterClause<E> and();
 
-    //TODO OR multi()
+    /**
+     * to append `and` key word and let some filter to be run in parentheses
+     */
+    SQLFilterClause<E> and(String customQuery);
+
+    /**
+     * to append `or` key word in where clause
+     */
     SQLFilterClause<E> or();
 
-    //TODO in with inner select
-    SQLFilterClause<E> in(String field, String... items);
+    /**
+     * to append `or` key word and let some filter to be run in parentheses
+     */
+    SQLFilterClause<E> or(String customQuery);
 
-    //TODO not in with inner select
-    SQLFilterClause<E> notIn(String field, String... items);
+    SQLFilterClause<E> in(String field, Object... items);
 
-    //TODO like,exists, between, not, is, null
+    SQLFilterClause<E> in(String field, String customQuery);
 
+    SQLFilterClause<E> notIn(String field, Object... items);
+
+    SQLFilterClause<E> notIn(String field, String customQuery);
+
+    SQLFilterClause<E> exists(String customQuery);
+
+    SQLFilterClause<E> notExists(String customQuery);
+
+    SQLFilterClause<E> innerSelect();
+
+    //TODO like, between, not, is, null
+
+    /**
+     * <p> any customized filter that is not supported by main {@link SQLFilterClause} can be specifies by this function
+     *
+     * @param customClause any customized filter clause
+     * @return SQLFilterClause<E> object
+     */
     SQLFilterClause<E> customClause(String customClause);
 
 }
