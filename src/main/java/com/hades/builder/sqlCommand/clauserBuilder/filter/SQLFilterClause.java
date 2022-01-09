@@ -63,11 +63,25 @@ public interface SQLFilterClause<E extends EntityType> {
      */
     SQLFilterClause<E> notEqual(Selection selection, Object filterPhrase);
 
-    //TODO AND multi ()
+    /**
+     * to append `and` key word in where clause
+     */
     SQLFilterClause<E> and();
 
-    //TODO OR multi()
+    /**
+     * to append `and` key word and let some filter to be run in parentheses
+     */
+    SQLFilterClause<E> and(String customQuery);
+
+    /**
+     * to append `or` key word in where clause
+     */
     SQLFilterClause<E> or();
+
+    /**
+     * to append `or` key word and let some filter to be run in parentheses
+     */
+    SQLFilterClause<E> or(String customQuery);
 
     SQLFilterClause<E> in(String field, Object... items);
 
@@ -77,9 +91,13 @@ public interface SQLFilterClause<E extends EntityType> {
 
     SQLFilterClause<E> notIn(String field, String customQuery);
 
+    SQLFilterClause<E> exists(String customQuery);
+
+    SQLFilterClause<E> notExists(String customQuery);
+
     SQLFilterClause<E> innerSelect();
 
-    //TODO like,exists, between, not, is, null
+    //TODO like, between, not, is, null
 
     /**
      * <p> any customized filter that is not supported by main {@link SQLFilterClause} can be specifies by this function

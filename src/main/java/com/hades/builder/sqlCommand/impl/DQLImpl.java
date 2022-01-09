@@ -36,7 +36,6 @@ public class DQLImpl<E extends EntityType> implements SQL_DQL<E> {
         return query.toString();
     }
 
-    //TODO some custom select fields
     @Override
     public String selectQuery(E e, String... fieldsName) {
         Class<?> entity = getClazz(e);

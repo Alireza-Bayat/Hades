@@ -23,7 +23,7 @@ import com.hades.model.type.Selection;
  */
 public class FilterClause<E extends EntityType> extends ClauseElements implements SQLFilterClause<E> {
 
-    private final SQLUtilities<E> sqlUtils = new SQLUtilities<E>();
+    private final SQLUtilities<E> sqlUtils = new SQLUtilities<>();
     private Class<?> clazz;
 
     /**
@@ -31,9 +31,6 @@ public class FilterClause<E extends EntityType> extends ClauseElements implement
      */
     public FilterClause(Class<?> clazz) {
         this.clazz = clazz;
-    }
-
-    public FilterClause() {
     }
 
     @Override
@@ -83,12 +80,29 @@ public class FilterClause<E extends EntityType> extends ClauseElements implement
     }
 
     @Override
+    public SQLFilterClause<E> and(String customQuery) {
+        super.setClause(super.clause.concat(sqlUtils.addQueryKeyWord(QueryKeyWords.AND))
+                .concat(sqlUtils.addQueryKeyOperator(QueryKeyOperators.OPEN_PARENTHESES))
+                .concat(customQuery)
+                .concat(sqlUtils.addQueryKeyOperator(QueryKeyOperators.CLOSE_PARENTHESES)));
+        return this;
+    }
+
+    @Override
     public FilterClause<E> or() {
         super.setClause(super.clause.concat(sqlUtils.addQueryKeyWord(QueryKeyWords.OR)));
         return this;
     }
 
-    //TODO refactor
+    @Override
+    public SQLFilterClause<E> or(String customQuery) {
+        super.setClause(super.clause.concat(sqlUtils.addQueryKeyWord(QueryKeyWords.OR))
+                .concat(sqlUtils.addQueryKeyOperator(QueryKeyOperators.OPEN_PARENTHESES))
+                .concat(customQuery)
+                .concat(sqlUtils.addQueryKeyOperator(QueryKeyOperators.CLOSE_PARENTHESES)));
+        return this;
+    }
+
     @Override
     public SQLFilterClause<E> in(String field, Object... items) {
         String inBlock = "";
@@ -132,6 +146,22 @@ public class FilterClause<E extends EntityType> extends ClauseElements implement
                 .concat(field).concat(sqlUtils.addQueryKeyWord(QueryKeyWords.NOT_IN))
                 .concat(sqlUtils.addQueryKeyOperator(QueryKeyOperators.OPEN_PARENTHESES))
                 .concat(customQuery).concat(sqlUtils.addQueryKeyOperator(QueryKeyOperators.CLOSE_PARENTHESES))));
+        return this;
+    }
+
+    @Override
+    public SQLFilterClause<E> exists(String customQuery) {
+        super.setClause(clause.concat(sqlUtils.addQueryKeyWord(QueryKeyWords.EXISTS))
+                .concat(sqlUtils.addQueryKeyOperator(QueryKeyOperators.OPEN_PARENTHESES))
+                .concat(customQuery).concat(sqlUtils.addQueryKeyOperator(QueryKeyOperators.CLOSE_PARENTHESES)));
+        return this;
+    }
+
+    @Override
+    public SQLFilterClause<E> notExists(String customQuery) {
+        super.setClause(clause.concat(sqlUtils.addQueryKeyWord(QueryKeyWords.NOT_EXISTS))
+                .concat(sqlUtils.addQueryKeyOperator(QueryKeyOperators.OPEN_PARENTHESES))
+                .concat(customQuery).concat(sqlUtils.addQueryKeyOperator(QueryKeyOperators.CLOSE_PARENTHESES)));
         return this;
     }
 
