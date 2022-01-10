@@ -33,6 +33,9 @@ public class FilterClause<E extends EntityType> extends ClauseElements implement
         this.clazz = clazz;
     }
 
+    public FilterClause() {
+    }
+
     @Override
     public FilterClause<E> createInstance(E e) {
         clazz = sqlUtils.getClazz(e);
