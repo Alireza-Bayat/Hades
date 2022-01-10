@@ -116,4 +116,19 @@ public class Main {
         System.out.println(relationalServices.findAll(new EntitySample(), clauseBuilder));
     }
 
+    @Test
+    public void like() {
+        filterClause.like("name", "%alireza%");
+        clauseBuilder.setFilterClause(filterClause);
+        System.out.println(relationalServices.findAll(new EntitySample(), clauseBuilder));
+    }
+
+    @Test
+    public void between() {
+        filterClause.between("id", 1, 12);
+        clauseBuilder.setFilterClause(filterClause);
+        System.out.println(relationalServices.findAll(new EntitySample(), clauseBuilder));
+    }
+
+
 }

@@ -104,6 +104,35 @@ public class FilterClause<E extends EntityType> extends ClauseElements implement
     }
 
     @Override
+    public SQLFilterClause<E> not() {
+        super.setClause(super.clause.concat(sqlUtils.addQueryKeyWord(QueryKeyWords.NOT)));
+        return this;
+    }
+
+    @Override
+    public SQLFilterClause<E> not(String customQuery) {
+        super.setClause(super.clause.concat(sqlUtils.addQueryKeyWord(QueryKeyWords.NOT))
+                .concat(sqlUtils.addQueryKeyOperator(QueryKeyOperators.OPEN_PARENTHESES))
+                .concat(customQuery)
+                .concat(sqlUtils.addQueryKeyOperator(QueryKeyOperators.CLOSE_PARENTHESES)));
+        return this;
+    }
+
+    @Override
+    public SQLFilterClause<E> like(String field, String matchString) {
+        super.setClause(clause.concat(" ").concat(field).concat(sqlUtils.addQueryKeyWord(QueryKeyWords.LIKE))
+                .concat("'").concat(matchString).concat("'"));
+        return this;
+    }
+
+    @Override
+    public SQLFilterClause<E> between(String field, Object firstValue, Object secondValue) {
+        super.setClause(clause.concat(" ").concat(field).concat(sqlUtils.addQueryKeyWord(QueryKeyWords.BETWEEN))
+                .concat(sqlUtils.getFieldType(firstValue)).concat(sqlUtils.addQueryKeyWord(QueryKeyWords.AND)).concat(sqlUtils.getFieldType(secondValue)));
+        return this;
+    }
+
+    @Override
     public SQLFilterClause<E> in(String field, Object... items) {
         String inBlock = "";
         inBlock = inBlock.concat(" ").concat(sqlUtils.getTableName(sqlUtils.getTableAnnotation(clazz)))
