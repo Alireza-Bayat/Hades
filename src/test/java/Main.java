@@ -11,7 +11,6 @@ import com.hades.model.type.Selection;
 import com.hades.services.RelationalServices;
 import entity.EntitySample;
 import entity.ReferencedEntitySample;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
