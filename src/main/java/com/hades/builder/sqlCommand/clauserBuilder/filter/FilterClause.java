@@ -197,23 +197,6 @@ public class FilterClause<E extends EntityType> extends ClauseElements implement
     }
 
     @Override
-    public SQLFilterClause<E> like(Selection selection, String filterPhrase) {
-        sqlUtils.fieldExistInEntity(clazz, selection);
-        super.setClause(super.clause.concat(sqlUtils.getTableName(sqlUtils.getTableAnnotation(clazz)))
-                .concat(sqlUtils.addQueryKeyOperator(QueryKeyOperators.DOT)).concat(selection.getFieldName())
-                .concat(sqlUtils.addQueryKeyWord(QueryKeyWords.LIKE)).concat(sqlUtils.getFieldType(filterPhrase)));
-        return this;
-    }
-
-    @Override
-    public SQLFilterClause<E> like(String field, String filterPhrase) {
-        super.setClause(super.clause.concat(sqlUtils.getTableName(sqlUtils.getTableAnnotation(clazz)))
-                .concat(sqlUtils.addQueryKeyOperator(QueryKeyOperators.DOT)).concat(field)
-                .concat(sqlUtils.addQueryKeyWord(QueryKeyWords.LIKE)).concat(sqlUtils.getFieldType(filterPhrase)));
-        return this;
-    }
-
-    @Override
     public SQLFilterClause<E> innerSelect() {
         return null;
     }
