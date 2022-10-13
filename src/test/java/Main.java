@@ -11,7 +11,7 @@ import com.hades.model.type.Selection;
 import com.hades.services.RelationalServices;
 import entity.EntitySample;
 import entity.ReferencedEntitySample;
-import org.junit.Assert;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -115,5 +115,13 @@ public class Main {
         clauseBuilder.setFilterClause(filterClause);
         System.out.println(relationalServices.findAll(new EntitySample(), clauseBuilder));
     }
+
+    @Test
+    public void like_notLike() {
+        filterClause.like("name", "%reza");
+        clauseBuilder.setFilterClause(filterClause);
+        System.out.println(relationalServices.findAll(new EntitySample(), clauseBuilder));
+    }
+
 
 }

@@ -1,7 +1,6 @@
 package com.hades.builder.sqlCommand.clauserBuilder.filter;
 
 import com.hades.builder.sqlCommand.SQLUtilities;
-import com.hades.builder.sqlCommand.SQLUtils;
 import com.hades.builder.sqlCommand.clauserBuilder.ClauseElements;
 import com.hades.model.enumeration.relational.QueryKeyOperators;
 import com.hades.model.enumeration.relational.QueryKeyWords;
@@ -162,6 +161,23 @@ public class FilterClause<E extends EntityType> extends ClauseElements implement
         super.setClause(clause.concat(sqlUtils.addQueryKeyWord(QueryKeyWords.NOT_EXISTS))
                 .concat(sqlUtils.addQueryKeyOperator(QueryKeyOperators.OPEN_PARENTHESES))
                 .concat(customQuery).concat(sqlUtils.addQueryKeyOperator(QueryKeyOperators.CLOSE_PARENTHESES)));
+        return this;
+    }
+
+    @Override
+    public SQLFilterClause<E> like(Selection selection, String filterPhrase) {
+        sqlUtils.fieldExistInEntity(clazz, selection);
+        super.setClause(super.clause.concat(sqlUtils.getTableName(sqlUtils.getTableAnnotation(clazz)))
+                .concat(sqlUtils.addQueryKeyOperator(QueryKeyOperators.DOT)).concat(selection.getFieldName())
+                .concat(sqlUtils.addQueryKeyWord(QueryKeyWords.LIKE)).concat(sqlUtils.getFieldType(filterPhrase)));
+        return this;
+    }
+
+    @Override
+    public SQLFilterClause<E> like(String field, String filterPhrase) {
+        super.setClause(super.clause.concat(sqlUtils.getTableName(sqlUtils.getTableAnnotation(clazz)))
+                .concat(sqlUtils.addQueryKeyOperator(QueryKeyOperators.DOT)).concat(field)
+                .concat(sqlUtils.addQueryKeyWord(QueryKeyWords.LIKE)).concat(sqlUtils.getFieldType(filterPhrase)));
         return this;
     }
 

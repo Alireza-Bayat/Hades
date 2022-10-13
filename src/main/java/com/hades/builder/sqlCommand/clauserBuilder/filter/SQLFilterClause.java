@@ -83,21 +83,81 @@ public interface SQLFilterClause<E extends EntityType> {
      */
     SQLFilterClause<E> or(String customQuery);
 
+    /**
+     * <p> In operand in standard language
+     *
+     * @param field field name which must be present as {@link Column#name()} in entity class
+     * @param items varargs of all the objects that will appear in final clause
+     * @return SQLFilterClause<E> object
+     */
     SQLFilterClause<E> in(String field, Object... items);
 
+    /**
+     * <p> In operand in standard language
+     *
+     * @param field field name which must be present as {@link Column#name()} in entity class
+     * @param customQuery custom objects that will appear in final clause
+     * @return SQLFilterClause<E> object
+     */
     SQLFilterClause<E> in(String field, String customQuery);
 
+    /**
+     * <p> notIn operand in standard language
+     *
+     * @param field field name which must be present as {@link Column#name()} in entity class
+     * @param items varargs of all the objects that will appear in final clause
+     * @return SQLFilterClause<E> object
+     */
     SQLFilterClause<E> notIn(String field, Object... items);
 
+    /**
+     * <p> notIn operand in standard language
+     *
+     * @param field field name which must be present as {@link Column#name()} in entity class
+     * @param customQuery custom objects that will appear in final clause
+     * @return SQLFilterClause<E> object
+     */
     SQLFilterClause<E> notIn(String field, String customQuery);
 
+    /**
+     * <p> exists operand in standard language
+     *
+     * @param customQuery exact query will appear in final query
+     * @return SQLFilterClause<E> object
+     */
     SQLFilterClause<E> exists(String customQuery);
 
+    /**
+     * <p> not exists operand in standard language
+     *
+     * @param customQuery exact query will be appeared in final query
+     * @return SQLFilterClause<E> object
+     */
     SQLFilterClause<E> notExists(String customQuery);
+
+    /**
+     * <p> like operand in standard query language
+     * to generate like phrase in between given fields
+     *
+     * @param selection    field name which must be present as {@link Column#name()} in entity class stored in {@link Selection#fieldName}
+     * @param filterPhrase filtered value in field
+     * @return SQLFilterClause<E> object
+     */
+    SQLFilterClause<E> like(Selection selection, String filterPhrase);
+
+    /**
+     * <p> like operand in standard query language
+     * to generate like phrase in between given fields
+     *
+     * @param field        field name which must be present as {@link Column#name()} in entity class
+     * @param filterPhrase filtered value in field
+     * @return SQLFilterClause<E> object
+     */
+    SQLFilterClause<E> like(String field, String filterPhrase);
 
     SQLFilterClause<E> innerSelect();
 
-    //TODO like, between, not, is, null
+    //TODO between, not, is, null
 
     /**
      * <p> any customized filter that is not supported by main {@link SQLFilterClause} can be specifies by this function
