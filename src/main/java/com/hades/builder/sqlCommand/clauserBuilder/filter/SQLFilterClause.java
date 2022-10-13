@@ -90,6 +90,35 @@ public interface SQLFilterClause<E extends EntityType> {
      * @param items varargs of all the objects that will appear in final clause
      * @return SQLFilterClause<E> object
      */
+    /**
+     * to append `not` key word in where clause
+     */
+    SQLFilterClause<E> not();
+
+    /**
+     * to append `not` key word and let some filter to be run in parentheses
+     */
+    SQLFilterClause<E> not(String customQuery);
+
+    /**
+     * <p> like operand in standard query language
+     * to generate like phrase in between given fields
+     *
+     * @param field    field name which must be present as {@link Column#name()}
+     * @param matchString filtered value in field
+     * @return SQLFilterClause<E> object
+     */
+    SQLFilterClause<E> like(String field, String matchString);
+
+    SQLFilterClause<E> between(String field, Object firstValue, Object secondValue);
+
+    /**
+     * <p> In operand in standard language
+     *
+     * @param field field name which must be present as {@link Column#name()} in entity class
+     * @param items varargs of all the objects that will appear in final clause
+     * @return SQLFilterClause<E> object
+     */
     SQLFilterClause<E> in(String field, Object... items);
 
     /**
@@ -135,29 +164,9 @@ public interface SQLFilterClause<E extends EntityType> {
      */
     SQLFilterClause<E> notExists(String customQuery);
 
-    /**
-     * <p> like operand in standard query language
-     * to generate like phrase in between given fields
-     *
-     * @param selection    field name which must be present as {@link Column#name()} in entity class stored in {@link Selection#fieldName}
-     * @param filterPhrase filtered value in field
-     * @return SQLFilterClause<E> object
-     */
-    SQLFilterClause<E> like(Selection selection, String filterPhrase);
-
-    /**
-     * <p> like operand in standard query language
-     * to generate like phrase in between given fields
-     *
-     * @param field        field name which must be present as {@link Column#name()} in entity class
-     * @param filterPhrase filtered value in field
-     * @return SQLFilterClause<E> object
-     */
-    SQLFilterClause<E> like(String field, String filterPhrase);
-
     SQLFilterClause<E> innerSelect();
 
-    //TODO between, not, is, null
+    //TODO  not, is, null
 
     /**
      * <p> any customized filter that is not supported by main {@link SQLFilterClause} can be specifies by this function

@@ -19,6 +19,10 @@ public interface SQLCommands<E extends EntityType> {
     String findAll(E e, ClauseBuilder<E> clauseBuilder);
 
     String findAll(E e, ClauseBuilder<E> clauseBuilder, String... fieldsName);
+
+    String find(E e, ClauseBuilder<E> clauseBuilder);
+
+    String find(E e, ClauseBuilder<E> clauseBuilder, String... fieldsName);
     //</editor-fold>
 
 }
