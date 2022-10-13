@@ -20,3 +20,5 @@
 *.ear
 *.db
 
+.jpb
+.run
