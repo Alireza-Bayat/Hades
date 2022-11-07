@@ -2,7 +2,7 @@ package com.hades.builder.sqlCommand.rules;
 
 
 import com.hades.builder.sqlCommand.SQLUtils;
-import com.hades.builder.sqlCommand.clauserBuilder.ClauseBuilder;
+import com.hades.builder.sqlCommand.clauseBuilder.ClauseBuilder;
 import com.hades.model.type.EntityType;
 import com.hades.model.type.Selection;
 

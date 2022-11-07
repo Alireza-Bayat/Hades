@@ -1,0 +1,24 @@
+-classpath
+'/Users/alireza/.m2/repository/javax/persistence/javax.persistence-api/2.2/javax.persistence-api-2.2.jar'
+-encoding
+'UTF-8'
+-protected
+-sourcepath
+'/Users/alireza/projects/own/Hades/src/main/java'
+-author
+-bottom
+'Copyright &#169; 2022. All rights reserved.'
+-charset
+'UTF-8'
+-d
+'/Users/alireza/projects/own/Hades/target/site/apidocs'
+-docencoding
+'UTF-8'
+-doctitle
+'Hades 0.0.1 API'
+-linkoffline
+'https://docs.oracle.com/javase/8/docs/api' '/Users/alireza/projects/own/Hades/target/javadoc-bundle-options'
+-use
+-version
+-windowtitle
+'Hades 0.0.1 API'
