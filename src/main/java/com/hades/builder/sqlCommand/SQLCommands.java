@@ -1,6 +1,6 @@
 package com.hades.builder.sqlCommand;
 
-import com.hades.builder.sqlCommand.clauserBuilder.ClauseBuilder;
+import com.hades.builder.sqlCommand.clauseBuilder.ClauseBuilder;
 import com.hades.model.type.EntityType;
 import com.hades.model.type.Selection;
 

@@ -1,8 +1,7 @@
-package com.hades.builder.sqlCommand.clauserBuilder.aggregate;
+package com.hades.builder.sqlCommand.clauseBuilder.aggregate;
 
 import com.hades.builder.sqlCommand.SQLUtilities;
-import com.hades.builder.sqlCommand.clauserBuilder.ClauseElements;
-import com.hades.model.enumeration.relational.QueryKeyOperators;
+import com.hades.builder.sqlCommand.clauseBuilder.ClauseElements;
 import com.hades.model.type.EntityType;
 
 /**

@@ -1,4 +1,4 @@
-package com.hades.builder.sqlCommand.clauserBuilder.order;
+package com.hades.builder.sqlCommand.clauseBuilder.order;
 
 import com.hades.model.enumeration.relational.OrderArrange;
 import com.hades.model.type.EntityType;

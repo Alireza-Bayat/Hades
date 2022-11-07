@@ -1,4 +1,4 @@
-package com.hades.builder.sqlCommand.clauserBuilder.filter;
+package com.hades.builder.sqlCommand.clauseBuilder.filter;
 
 import com.hades.model.type.EntityType;
 import com.hades.model.type.Selection;

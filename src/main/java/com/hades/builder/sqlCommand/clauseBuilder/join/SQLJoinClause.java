@@ -1,6 +1,6 @@
-package com.hades.builder.sqlCommand.clauserBuilder.join;
+package com.hades.builder.sqlCommand.clauseBuilder.join;
 
-import com.hades.builder.sqlCommand.clauserBuilder.filter.SQLFilterClause;
+import com.hades.builder.sqlCommand.clauseBuilder.filter.SQLFilterClause;
 import com.hades.model.enumeration.relational.JoinTypes;
 import com.hades.model.type.EntityType;
 

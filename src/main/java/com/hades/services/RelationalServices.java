@@ -1,7 +1,7 @@
 package com.hades.services;
 
 import com.hades.builder.sqlCommand.SQLCommands;
-import com.hades.builder.sqlCommand.clauserBuilder.ClauseBuilder;
+import com.hades.builder.sqlCommand.clauseBuilder.ClauseBuilder;
 import com.hades.builder.sqlCommand.impl.DQLImpl;
 import com.hades.model.type.EntityType;
 import com.hades.model.type.Selection;

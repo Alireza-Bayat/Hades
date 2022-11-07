@@ -1,4 +1,4 @@
-package com.hades.builder.sqlCommand.clauserBuilder;
+package com.hades.builder.sqlCommand.clauseBuilder;
 
 /**
  * @author alireza_bayat

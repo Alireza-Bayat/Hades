@@ -1,9 +1,8 @@
-package com.hades.builder.sqlCommand.clauserBuilder.join;
+package com.hades.builder.sqlCommand.clauseBuilder.join;
 
 import com.hades.builder.sqlCommand.SQLUtilities;
-import com.hades.builder.sqlCommand.SQLUtils;
-import com.hades.builder.sqlCommand.clauserBuilder.ClauseElements;
-import com.hades.builder.sqlCommand.clauserBuilder.filter.SQLFilterClause;
+import com.hades.builder.sqlCommand.clauseBuilder.ClauseElements;
+import com.hades.builder.sqlCommand.clauseBuilder.filter.SQLFilterClause;
 import com.hades.model.enumeration.relational.JoinTypes;
 import com.hades.model.enumeration.relational.QueryKeyOperators;
 import com.hades.model.enumeration.relational.QueryKeyWords;

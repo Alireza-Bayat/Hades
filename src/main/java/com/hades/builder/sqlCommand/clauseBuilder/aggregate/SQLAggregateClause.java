@@ -1,4 +1,4 @@
-package com.hades.builder.sqlCommand.clauserBuilder.aggregate;
+package com.hades.builder.sqlCommand.clauseBuilder.aggregate;
 
 import com.hades.model.type.EntityType;
 
