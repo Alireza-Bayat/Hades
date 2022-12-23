@@ -7,3 +7,4 @@
 7. complete readme file 
 8. probably, simple documentation of how to use library 
 9. research about the concept of stringBuilder,string concat and + in string s 
+10. inherited models in jpa ???

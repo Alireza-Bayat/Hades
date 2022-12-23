@@ -1,5 +1,7 @@
 package com.hades.builder.sqlCommand;
 
+import java.lang.reflect.InvocationTargetException;
+
 import com.hades.builder.sqlCommand.clauseBuilder.ClauseBuilder;
 import com.hades.model.type.EntityType;
 import com.hades.model.type.Selection;
@@ -10,19 +12,23 @@ import com.hades.model.type.Selection;
 public interface SQLCommands<E extends EntityType> {
 
     //<editor-fold defaultstate="collapsed" desc="DQL">
-    String findAll(E e);
+    String findAllQuery(E e);
 
-    String findAll(E e, String... fieldsName);
+    String findAllQuery(E e, String... fieldsName);
 
-    String findAll(E e, Selection... selections);
+    String findAllQuery(E e, Selection... selections);
 
-    String findAll(E e, ClauseBuilder<E> clauseBuilder);
+    String findAllQuery(E e, ClauseBuilder<E> clauseBuilder);
 
-    String findAll(E e, ClauseBuilder<E> clauseBuilder, String... fieldsName);
+    String findAllQuery(E e, ClauseBuilder<E> clauseBuilder, String... fieldsName);
 
-    String find(E e, ClauseBuilder<E> clauseBuilder);
+    String findQuery(E e, ClauseBuilder<E> clauseBuilder);
 
-    String find(E e, ClauseBuilder<E> clauseBuilder, String... fieldsName);
+    String findQuery(E e, ClauseBuilder<E> clauseBuilder, String... fieldsName);
+    //</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc="DML">
+    String insertQuery(E e) throws IllegalAccessException, InvocationTargetException;
     //</editor-fold>
 
 }

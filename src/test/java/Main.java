@@ -15,6 +15,9 @@ import entity.ReferencedEntitySample;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.lang.reflect.InvocationTargetException;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,26 +34,26 @@ public class Main {
         relationalServices = new RelationalServices<>();
         clauseBuilder = new ClauseBuilder<>();
         filterClause = new FilterClause<>(EntitySample.class);
-        joinClause = new JoinClause<EntitySample>(EntitySample.class);
+        joinClause = new JoinClause<>(EntitySample.class);
         orderClause = new OrderClause<>(EntitySample.class);
     }
 
 
     @Test
     public void selectQuery() {
-        System.out.println("select all -> " + relationalServices.findAll(new EntitySample()));
+        System.out.println("select all -> " + relationalServices.findAllQuery(new EntitySample()));
     }
 
     @Test
     public void customizedSelectQuery() {
-        System.out.println("select varargs -> " + relationalServices.findAll(new EntitySample(), "id", "name", "Type", "asda"));
+        System.out.println("select varargs -> " + relationalServices.findAllQuery(new EntitySample(), "id", "name", "Type", "asda"));
     }
 
     @Test
     public void customizedSelectQueryWithSelection() {
         List<Selection> selections = new ArrayList<>();
         selections.add(new Selection("id"));
-        System.out.println("selection varargs -> " + relationalServices.findAll(new EntitySample(), selections.toArray(new Selection[0])));
+        System.out.println("selection varargs -> " + relationalServices.findAllQuery(new EntitySample(), selections.toArray(new Selection[0])));
     }
 
     @Test
@@ -70,7 +73,7 @@ public class Main {
         clauseBuilder.setJoinClause(joinClause);
         clauseBuilder.setOrderClause(orderClause);
 
-        System.out.println("select with where clause -> " + relationalServices.findAll(new EntitySample(), clauseBuilder));
+        System.out.println("select with where clause -> " + relationalServices.findAllQuery(new EntitySample(), clauseBuilder));
     }
 
     @Test
@@ -91,7 +94,7 @@ public class Main {
         clauseBuilder.setJoinClause(joinClause);
         clauseBuilder.setOrderClause(orderClause);
 
-        System.out.println("select with where clause customized -> " + relationalServices.findAll(new EntitySample(), clauseBuilder, "listing_type.id", "listing.id"));
+        System.out.println("select with where clause customized -> " + relationalServices.findAllQuery(new EntitySample(), clauseBuilder, "listing_type.id", "listing.id"));
     }
 
 
@@ -99,35 +102,42 @@ public class Main {
     public void inAndNotInQueries() {
         filterClause.in("property_type_id", "select id from propertyTypes").and().notIn("listing_type_id", 1, 2);
         clauseBuilder.setFilterClause(filterClause);
-        System.out.println(relationalServices.findAll(new EntitySample(), clauseBuilder));
+        System.out.println(relationalServices.findAllQuery(new EntitySample(), clauseBuilder));
     }
 
     @Test
     public void and_multiLine() {
         filterClause.equal("id", 1).and("id not in (123,12)");
         clauseBuilder.setFilterClause(filterClause);
-        System.out.println(relationalServices.findAll(new EntitySample(), clauseBuilder));
+        System.out.println(relationalServices.findAllQuery(new EntitySample(), clauseBuilder));
     }
 
     @Test
     public void exists() {
         filterClause.equal("id", 1).and().exists("select id from foo where foo.id = 12");
         clauseBuilder.setFilterClause(filterClause);
-        System.out.println(relationalServices.findAll(new EntitySample(), clauseBuilder));
+        System.out.println(relationalServices.findAllQuery(new EntitySample(), clauseBuilder));
     }
 
     @Test
     public void like() {
         filterClause.like("name", "%alireza%");
         clauseBuilder.setFilterClause(filterClause);
-        System.out.println(relationalServices.findAll(new EntitySample(), clauseBuilder));
+        System.out.println(relationalServices.findAllQuery(new EntitySample(), clauseBuilder));
     }
 
     @Test
     public void between() {
         filterClause.between("id", 1, 12);
         clauseBuilder.setFilterClause(filterClause);
-        System.out.println(relationalServices.findAll(new EntitySample(), clauseBuilder));
+        System.out.println(relationalServices.findAllQuery(new EntitySample(), clauseBuilder));
+    }
+
+    @Test
+    public void insert() throws IllegalAccessException, InvocationTargetException {
+        EntitySample entitySample = new EntitySample(10001,10002,10003,"name_field","family_field", Timestamp.valueOf(LocalDateTime.now()),1);
+
+        System.out.println(relationalServices.insertQuery(entitySample));
     }
 
 
